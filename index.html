@@ -200,6 +200,78 @@
   }
   .exp__cv:hover { color: var(--text); border-color: var(--text); }
 
+  /* ---- Cases section ---- */
+  .cases__grid {
+    display: grid;
+    /* 2 cards -> 2-up; auto-fit collapses spare tracks, so 6+ reflow to 3-up */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+  }
+  .case {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    padding: var(--space-m);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .case:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .case h3 { font-size: var(--step-1); margin: var(--space-m) 0 0; }
+  .lite-yt {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .lite-yt img { width: 100%; height: 100%; object-fit: cover; opacity: 0.82; transition: opacity 0.3s ease; }
+  .lite-yt:hover img { opacity: 1; }
+  .lite-yt__play {
+    position: absolute; inset: 0; margin: auto;
+    width: 4rem; height: 4rem;
+    background: var(--accent);
+    border-radius: 50%;
+    display: grid; place-items: center;
+  }
+  .lite-yt__play::after {
+    content: "";
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0.7rem 0 0.7rem 1.15rem;
+    border-color: transparent transparent transparent var(--bg);
+    margin-left: 0.25rem;
+  }
+  .lite-yt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lite-yt__frame { width: 100%; aspect-ratio: 16 / 9; border: 0; display: block; }
+  .case__body { margin: 0; }
+  .case__body dt {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: var(--space-s);
+  }
+  .case__body dd { margin: var(--space-2xs) 0 0; color: var(--muted); font-size: var(--step--1); line-height: 1.5; }
+  .cases__more {
+    display: inline-block;
+    margin-top: var(--space-xl);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step--1);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+  .cases__more:hover { color: var(--text); border-color: var(--text); }
+
   /* ---- Scroll-reveal helper (JS toggles .is-in) ---- */
   [data-reveal] {
     opacity: 0;
@@ -281,7 +353,44 @@
 
     <a class="exp__cv" href="cv/dmytro-bilukha-cv.pdf" data-reveal>Download full CV (PDF)</a>
   </section>
-  <section id="cases"><span class="label">Cases</span><h2 data-reveal>cases</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
+  <section id="cases">
+    <span class="label">Cases</span>
+    <h2 data-reveal>Shipped, not slideware</h2>
+    <p data-reveal>Real production outcomes, each framed as the problem, the fix, and the number that moved — with a walkthrough from the product portfolio channel.</p>
+    <div class="cases__grid">
+      <article class="case" data-reveal>
+        <button class="lite-yt" data-id="0P4A7sZnVRE" aria-label="Play video: Accessibility audit — the last mile is human">
+          <img src="https://i.ytimg.com/vi/0P4A7sZnVRE/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+          <span class="lite-yt__play" aria-hidden="true"></span>
+        </button>
+        <h3>Accessibility audit — the last mile is human</h3>
+        <dl class="case__body">
+          <dt>Problem</dt>
+          <dd>The automated a11y score plateaued while real screen-reader users still hit walls.</dd>
+          <dt>Solution</dt>
+          <dd>Three months validating directly with a blind user — fixed ARIA labels, focus traps, and live-region announcements in the header, cart, and search that audits couldn't catch.</dd>
+          <dt>Result</dt>
+          <dd>Audit score 60 → 95, plus a batch of real usability bugs closed.</dd>
+        </dl>
+      </article>
+      <article class="case" data-reveal>
+        <button class="lite-yt" data-id="rJ2_WVpQato" aria-label="Play video: Ship a blind link when there's no budget for the integration">
+          <img src="https://i.ytimg.com/vi/rJ2_WVpQato/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+          <span class="lite-yt__play" aria-hidden="true"></span>
+        </button>
+        <h3>Ship a blind link when there's no budget for the integration</h3>
+        <dl class="case__body">
+          <dt>Problem</dt>
+          <dd>A full third-party integration wasn't funded, so the obvious path was blocked.</dd>
+          <dt>Solution</dt>
+          <dd>Shipped a minimal "blind link" — the smallest thing that could route users through without the integration.</dd>
+          <dt>Result</dt>
+          <dd>Adoption moved from 0% to 10%.</dd>
+        </dl>
+      </article>
+    </div>
+    <a class="cases__more" href="https://www.youtube.com/playlist?list=PLTvKgymSu0IQ" target="_blank" rel="noopener">Watch the full portfolio →</a>
+  </section>
   <section id="work"><span class="label">Work</span><h2 data-reveal>work</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="skills"><span class="label">Skills</span><h2 data-reveal>skills</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="contact"><span class="label">Contact</span><h2 data-reveal>contact</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
@@ -328,6 +437,19 @@
 
   // Expose for later tickets that add content dynamically.
   window.revealRefresh = function () { ScrollTrigger.refresh(); };
+
+  // ---- Cases: lite YouTube embed (facade -> real iframe on click) ----
+  document.querySelectorAll(".lite-yt").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var f = document.createElement("iframe");
+      f.className = "lite-yt__frame";
+      f.src = "https://www.youtube-nocookie.com/embed/" + btn.dataset.id + "?autoplay=1";
+      f.title = btn.getAttribute("aria-label");
+      f.allow = "autoplay; encrypted-media; picture-in-picture";
+      f.allowFullscreen = true;
+      btn.replaceWith(f);
+    });
+  });
 
   // ---- Impact: count up each figure once when the grid scrolls in ----
   var stats = document.querySelectorAll("#impact .stat__num");
