@@ -117,6 +117,34 @@
   /* wide blocks scroll inside their own container */
   .scroll-x { overflow-x: auto; max-width: 100%; }
 
+  /* ---- Impact section ---- */
+  .impact__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-m) var(--space-l);
+    margin-top: var(--space-xl);
+  }
+  .stat {
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--line);
+  }
+  .stat__num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 5vw + 1rem, var(--step-4));
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .stat__label {
+    margin-top: var(--space-xs);
+    max-width: 22rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+    line-height: 1.5;
+  }
+
   /* ---- Scroll-reveal helper (JS toggles .is-in) ---- */
   [data-reveal] {
     opacity: 0;
@@ -148,7 +176,37 @@
 <main>
   <section id="hero"><span class="label">Hero</span><h2 data-reveal>hero</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="about"><span class="label">About</span><h2 data-reveal>about</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
-  <section id="impact"><span class="label">Impact</span><h2 data-reveal>impact</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
+  <section id="impact">
+    <span class="label">Impact</span>
+    <h2 data-reveal>The numbers behind the work</h2>
+    <p data-reveal>Outcomes shipped across web performance, growth, and high-traffic commerce events.</p>
+    <div class="impact__grid">
+      <div class="stat" data-reveal>
+        <div class="stat__num" data-prefix="×" data-to="32">×32</div>
+        <div class="stat__label">Recipes module page-views growth on Web</div>
+      </div>
+      <div class="stat" data-reveal>
+        <div class="stat__num" data-prefix="+" data-suffix="%" data-to="40">+40%</div>
+        <div class="stat__label">Core Web Vitals (LCP / FCP) improvement</div>
+      </div>
+      <div class="stat" data-reveal>
+        <div class="stat__num" data-suffix="M UAH" data-to="61">61M UAH</div>
+        <div class="stat__label">Record monthly GMV — December 2025</div>
+      </div>
+      <div class="stat" data-reveal>
+        <div class="stat__num" data-suffix="M+" data-to="1">1M+</div>
+        <div class="stat__label">Views on a single Black Friday promo landing</div>
+      </div>
+      <div class="stat" data-reveal>
+        <div class="stat__num" data-prefix="60 → " data-from="60" data-to="95">60 → 95</div>
+        <div class="stat__label">Accessibility audit score</div>
+      </div>
+      <div class="stat" data-reveal>
+        <div class="stat__num" data-suffix="M UAH" data-to="310">310M UAH</div>
+        <div class="stat__label">Total promo revenue supported during Black Friday — 243K transactions</div>
+      </div>
+    </div>
+  </section>
   <section id="experience"><span class="label">Experience</span><h2 data-reveal>experience</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="cases"><span class="label">Cases</span><h2 data-reveal>cases</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="work"><span class="label">Work</span><h2 data-reveal>work</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
@@ -197,6 +255,37 @@
 
   // Expose for later tickets that add content dynamically.
   window.revealRefresh = function () { ScrollTrigger.refresh(); };
+
+  // ---- Impact: count up each figure once when the grid scrolls in ----
+  var stats = document.querySelectorAll("#impact .stat__num");
+  function renderStat(el, val) {
+    el.textContent = (el.dataset.prefix || "") + Math.round(val) + (el.dataset.suffix || "");
+  }
+  function runCountUp() {
+    stats.forEach(function (el) {
+      var to = parseFloat(el.dataset.to);
+      var from = parseFloat(el.dataset.from || "0");
+      if (reduceMotion) { renderStat(el, to); return; }
+      var proxy = { v: from };
+      renderStat(el, from);
+      gsap.to(proxy, {
+        v: to, duration: 1.6, ease: "power2.out",
+        onUpdate: function () { renderStat(el, proxy.v); }
+      });
+    });
+  }
+  if (stats.length) {
+    if (reduceMotion) {
+      runCountUp();
+    } else {
+      ScrollTrigger.create({
+        trigger: "#impact .impact__grid",
+        start: "top 85%",
+        once: true,
+        onEnter: runCountUp
+      });
+    }
+  }
 })();
 </script>
 
