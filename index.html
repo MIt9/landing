@@ -145,6 +145,61 @@
     line-height: 1.5;
   }
 
+  /* ---- Experience section ---- */
+  .exp__role {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-2);
+    line-height: 1.2;
+    margin-top: var(--space-xl);
+  }
+  .exp__meta {
+    margin-top: var(--space-2xs);
+    color: var(--muted);
+    font-size: var(--step--1);
+    letter-spacing: 0.02em;
+  }
+  .exp__points {
+    list-style: none;
+    margin: var(--space-l) 0 0;
+    padding: 0;
+    max-width: 46rem;
+  }
+  .exp__points li {
+    position: relative;
+    padding: var(--space-m) 0 var(--space-m) var(--space-m);
+    border-top: 1px solid var(--line);
+    color: var(--text);
+  }
+  .exp__points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(var(--space-m) + 0.55em);
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+  }
+  .exp__points strong { font-weight: 600; }
+  .exp__earlier {
+    margin-top: var(--space-l);
+    max-width: 46rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .exp__cv {
+    display: inline-block;
+    margin-top: var(--space-l);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step--1);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+  .exp__cv:hover { color: var(--text); border-color: var(--text); }
+
   /* ---- Scroll-reveal helper (JS toggles .is-in) ---- */
   [data-reveal] {
     opacity: 0;
@@ -207,7 +262,25 @@
       </div>
     </div>
   </section>
-  <section id="experience"><span class="label">Experience</span><h2 data-reveal>experience</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
+  <section id="experience">
+    <span class="label">Experience</span>
+    <h2 data-reveal>One company, ten years, developer to Tech Lead</h2>
+    <p data-reveal>The full CV lists every role. This is the part that matters: a decade of compounding ownership at one place.</p>
+
+    <div class="exp__role" data-reveal>Tech Lead / Senior Frontend Developer — TEMABIT Software Development (Fozzy Group)</div>
+    <div class="exp__meta" data-reveal>Vinnytsia, Ukraine · Mar 2016 – Present · 10+ years. Joined as Frontend Developer, Senior in 2018, Tech Lead in 2019 — developer to tech lead in three years.</div>
+
+    <ul class="exp__points">
+      <li data-reveal>Managed teams of <strong>8–12 engineers</strong> (currently 2 FE, 2 BE, 3 QA, 1 BA, 1 Designer) and mentored <strong>5+ developers</strong> to senior level.</li>
+      <li data-reveal>Led the merger of <strong>shop.silpo.ua and silpo.ua</strong> into a single platform — <strong>+12% traffic, +4% conversion rate</strong>.</li>
+      <li data-reveal>Architected the <strong>banners microservice</strong>, extracted from the monolith — 50+ banners for the LOKO app with zero extra development.</li>
+      <li data-reveal>Designed the <strong>routing gateway (404-service)</strong> — DB-driven React-vs-Angular rendering for every content page.</li>
+    </ul>
+
+    <p class="exp__earlier" data-reveal>Before Fozzy: cross-platform app developer at AppsStudio (2015–2016), and freelance frontend and CMS templates (2012–2015). A former Greco-Roman wrestling coach who switched to code.</p>
+
+    <a class="exp__cv" href="cv/dmytro-bilukha-cv.pdf" data-reveal>Download full CV (PDF)</a>
+  </section>
   <section id="cases"><span class="label">Cases</span><h2 data-reveal>cases</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="work"><span class="label">Work</span><h2 data-reveal>work</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="skills"><span class="label">Skills</span><h2 data-reveal>skills</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
