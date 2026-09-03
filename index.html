@@ -3,9 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dmytro Bilukha</title>
-<meta name="description" content="Dmytro Bilukha — personal business card.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A0A0B'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='18' font-weight='700' fill='%23F5A524' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+<title>Dmytro Bilukha — Frontend Tech Lead</title>
+<meta name="description" content="Frontend Tech Lead with 10 years shipping high-traffic web products at Ukraine's largest grocery retailer — team leadership, web performance, and generative-media tooling.">
+<meta name="theme-color" content="#0A0A0B">
+
+<!-- Domain bilukha.dev is a PLACEHOLDER — not registered yet; update canonical + og:url + JSON-LD url once it is. -->
+<link rel="canonical" href="https://bilukha.dev/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dmytro Bilukha — Frontend Tech Lead">
+<meta property="og:description" content="10 years shipping high-traffic web products at Ukraine's largest grocery retailer — team leadership, web performance, and generative-media tooling.">
+<meta property="og:image" content="https://bilukha.dev/assets/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://bilukha.dev/">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dmytro Bilukha — Frontend Tech Lead">
+<meta name="twitter:description" content="10 years shipping high-traffic web products at Ukraine's largest grocery retailer — team leadership, web performance, and generative-media tooling.">
+<meta name="twitter:image" content="https://bilukha.dev/assets/img/og-image.jpg">
+
+<!-- Amber "DB" monogram on near-black, inline SVG — no external request -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A0A0B'/%3E%3Ctext x='16' y='23' font-family='Space Grotesk, Arial, sans-serif' font-size='16' font-weight='700' letter-spacing='-0.5' fill='%23F5A524' text-anchor='middle'%3EDB%3C/text%3E%3C/svg%3E">
+
+<link rel="preload" href="assets/fonts/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Dmytro Bilukha",
+  "jobTitle": "Frontend Tech Lead",
+  "url": "https://bilukha.dev/",
+  "sameAs": [
+    "https://www.linkedin.com/in/dmytro-bilukha",
+    "https://github.com/MIt9",
+    "https://www.youtube.com/playlist?list=PLTvKgymSu0IQ"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Vinnytsia",
+    "addressCountry": "UA"
+  },
+  "knowsAbout": ["Frontend development", "React", "TypeScript", "Web performance", "Web accessibility", "Engineering team leadership"]
+}
+</script>
 
 <style>
   /* ---- Self-hosted fonts (Latin subset, swap) ---- */
@@ -79,6 +122,32 @@
   a { color: var(--accent); }
   img { max-width: 100%; height: auto; display: block; }
 
+  /* global focus ring — covers every interactive element not styled individually */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  /* skip-to-content — visible only on keyboard focus */
+  .skip-link {
+    position: fixed;
+    left: var(--space-s);
+    top: var(--space-s);
+    z-index: 100;
+    padding: var(--space-xs) var(--space-s);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step--1);
+    text-decoration: none;
+    transform: translateY(-160%);
+    transition: transform 0.2s ease;
+  }
+  .skip-link:focus { transform: none; }
+  main:focus { outline: none; }
+
   /* ---- Layout ---- */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 10;
@@ -91,7 +160,7 @@
     backdrop-filter: blur(6px);
   }
   .nav a { color: var(--muted); text-decoration: none; }
-  .nav a:hover { color: var(--text); }
+  .nav a:hover, .nav a:focus-visible { color: var(--text); }
   .nav .brand { color: var(--text); margin-right: auto; }
 
   main { padding-top: var(--space-2xl); }
@@ -566,21 +635,31 @@
   /* ---- Reduced motion: everything visible, no transitions ---- */
   @media (prefers-reduced-motion: reduce) {
     [data-reveal] { opacity: 1; transform: none; transition: none; }
-    * { scroll-behavior: auto !important; }
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <a class="brand" href="#hero">Dmytro Bilukha</a>
-  <a href="#about">About</a>
-  <a href="#experience">Experience</a>
-  <a href="#work">Work</a>
-  <a href="#contact">Contact</a>
-</nav>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
-<main>
+<header>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#hero">Dmytro Bilukha</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="main-content" tabindex="-1">
   <section id="hero" class="hero">
     <div class="hero__bg" aria-hidden="true">
       <video class="hero__video" muted loop playsinline preload="metadata" poster="assets/video/hero-poster.jpg">
@@ -610,8 +689,8 @@
     <h2 data-reveal>From the wrestling mat to the merge queue</h2>
     <div class="about__layout">
       <div class="about__media" data-reveal>
-        <video class="about__video" muted loop playsinline preload="metadata"
-               poster="assets/video/portrait-poster.jpg" aria-label="Portrait of Dmytro Bilukha">
+        <video class="about__video" muted loop playsinline preload="none"
+               poster="assets/video/portrait-poster.jpg" aria-label="Cinemagraph portrait of Dmytro Bilukha">
           <source src="assets/video/portrait-cinemagraph.webm" type="video/webm">
           <source src="assets/video/portrait-cinemagraph.mp4" type="video/mp4">
         </video>
@@ -679,7 +758,7 @@
     <div class="cases__grid">
       <article class="case" data-reveal>
         <button class="lite-yt" data-id="0P4A7sZnVRE" aria-label="Play video: Accessibility audit — the last mile is human">
-          <img src="https://i.ytimg.com/vi/0P4A7sZnVRE/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+          <img src="https://i.ytimg.com/vi/0P4A7sZnVRE/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="480" height="360">
           <span class="lite-yt__play" aria-hidden="true"></span>
         </button>
         <h3>Accessibility audit — the last mile is human</h3>
@@ -694,7 +773,7 @@
       </article>
       <article class="case" data-reveal>
         <button class="lite-yt" data-id="rJ2_WVpQato" aria-label="Play video: Ship a blind link when there's no budget for the integration">
-          <img src="https://i.ytimg.com/vi/rJ2_WVpQato/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+          <img src="https://i.ytimg.com/vi/rJ2_WVpQato/hqdefault.jpg" alt="" loading="lazy" decoding="async" width="480" height="360">
           <span class="lite-yt__play" aria-hidden="true"></span>
         </button>
         <h3>Ship a blind link when there's no budget for the integration</h3>
@@ -818,13 +897,14 @@
   <a class="footer__top" href="#hero">Back to top</a>
 </footer>
 
-<!-- ---- CDN libs, pinned exact versions ---- -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<!-- ---- CDN libs, pinned exact versions. defer: non-blocking, runs in order before DOMContentLoaded ---- -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 
 <script>
-(function () {
+// Wait for the deferred CDN libs (they finish before DOMContentLoaded fires).
+document.addEventListener("DOMContentLoaded", function () {
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   gsap.registerPlugin(ScrollTrigger);
@@ -954,7 +1034,7 @@
   if (aboutVideo && !reduceMotion && !window.matchMedia("(max-width: 768px)").matches) {
     aboutVideo.play().catch(function () {});
   }
-})();
+});
 </script>
 
 </body>
