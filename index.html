@@ -272,6 +272,54 @@
   }
   .cases__more:hover { color: var(--text); border-color: var(--text); }
 
+  /* ---- Work section (GitHub repos) ---- */
+  .work__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+  }
+  .repo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    border: 1px solid var(--line);
+    padding: var(--space-m);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .repo:hover, .repo:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
+  .repo:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .repo__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-1);
+  }
+  .repo__desc { margin: 0; color: var(--muted); font-size: var(--step--1); line-height: 1.5; flex: 1; }
+  .repo__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m);
+    font-size: var(--step--1);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .repo__lang { display: inline-flex; align-items: center; gap: var(--space-xs); }
+  .repo__dot { width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--muted); }
+  .work__more {
+    display: inline-block;
+    margin-top: var(--space-xl);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step--1);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+  .work__more:hover { color: var(--text); border-color: var(--text); }
+
   /* ---- Scroll-reveal helper (JS toggles .is-in) ---- */
   [data-reveal] {
     opacity: 0;
@@ -391,7 +439,54 @@
     </div>
     <a class="cases__more" href="https://www.youtube.com/playlist?list=PLTvKgymSu0IQ" target="_blank" rel="noopener">Watch the full portfolio →</a>
   </section>
-  <section id="work"><span class="label">Work</span><h2 data-reveal>work</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
+  <section id="work">
+    <span class="label">Selected work</span>
+    <h2 data-reveal>Open source, hand-picked</h2>
+    <p data-reveal>Five repositories that show the range — generative-media tooling, agent and MCP work, and two older originals with some mileage on them.</p>
+    <div class="work__grid">
+      <a class="repo" href="https://github.com/MIt9/kie-media-cli" target="_blank" rel="noopener" data-reveal>
+        <span class="repo__name">kie-media-cli</span>
+        <p class="repo__desc">CLI for generative media via the KIE API — the imagery and video on this site were generated with it.</p>
+        <span class="repo__meta">
+          <span class="repo__lang"><span class="repo__dot" style="background:#f1e05a"></span>JavaScript</span>
+          <span>★ 0</span>
+        </span>
+      </a>
+      <a class="repo" href="https://github.com/MIt9/Generative-Media-Skills" target="_blank" rel="noopener" data-reveal>
+        <span class="repo__name">Generative-Media-Skills</span>
+        <p class="repo__desc">Multi-modal generative-media skills for AI agents — image, video, and audio workflows.</p>
+        <span class="repo__meta">
+          <span class="repo__lang"><span class="repo__dot" style="background:#89e051"></span>Shell</span>
+          <span>★ 0</span>
+        </span>
+      </a>
+      <a class="repo" href="https://github.com/MIt9/silpo-agent-cli" target="_blank" rel="noopener" data-reveal>
+        <span class="repo__name">silpo-agent-cli</span>
+        <p class="repo__desc">Terminal agent over a grocery-retail MCP server — cart, delivery, and deals from the command line.</p>
+        <span class="repo__meta">
+          <span class="repo__lang"><span class="repo__dot" style="background:#3572A5"></span>Python</span>
+          <span>★ 0</span>
+        </span>
+      </a>
+      <a class="repo" href="https://github.com/MIt9/barcode-2-svg" target="_blank" rel="noopener" data-reveal>
+        <span class="repo__name">barcode-2-svg</span>
+        <p class="repo__desc">Server-side SVG barcode generation with no canvas dependency.</p>
+        <span class="repo__meta">
+          <span class="repo__lang"><span class="repo__dot" style="background:#f1e05a"></span>JavaScript</span>
+          <span>★ 9</span>
+        </span>
+      </a>
+      <a class="repo" href="https://github.com/MIt9/web-scoreboard" target="_blank" rel="noopener" data-reveal>
+        <span class="repo__name">web-scoreboard</span>
+        <p class="repo__desc">Live scoring app for Greco-Roman wrestling competitions.</p>
+        <span class="repo__meta">
+          <span class="repo__lang"><span class="repo__dot" style="background:#3178c6"></span>TypeScript</span>
+          <span>★ 1</span>
+        </span>
+      </a>
+    </div>
+    <a class="work__more" href="https://github.com/MIt9" target="_blank" rel="noopener">More on GitHub →</a>
+  </section>
   <section id="skills"><span class="label">Skills</span><h2 data-reveal>skills</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
   <section id="contact"><span class="label">Contact</span><h2 data-reveal>contact</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
 </main>
