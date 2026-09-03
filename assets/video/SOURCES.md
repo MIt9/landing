@@ -3,6 +3,7 @@
 Generated for ticket `03-video-generation`. One version each. Model: **`bytedance/seedance-2`** via `kie` CLI (kie.ai).
 
 Credits spent: **459** (~$2.30). Balance after: 9567.
+Portrait cinemagraph later regenerated from the real portrait (task `ecee379db85e23a81a1f5bdbde3f2a5d`, +205 credits, balance after: 9362).
 
 ---
 
@@ -44,38 +45,47 @@ ffmpeg -i hero.mp4 -vframes 1 -q:v 2 hero-poster.jpg
 ## 2. portrait-cinemagraph.mp4 / .webm — Portrait cinemagraph
 
 - **Model:** `bytedance/seedance-2` (image-to-video)
-- **kie task id:** `32263a582295693a3d2709f76ac798c7`
-- **Params:** `resolution=720p`, `aspect_ratio=3:4`, `duration=5`, `generate_audio=false`
-- **Source image:** `/Users/d.bilukcha/work/resume/photo/photo_2026-09-03_15-20-47.jpg`
-  (fallback per ticket — `assets/img/portrait.jpg` from ticket 02 did not exist at generation time)
-- **Subject:** Dmytro Bilukha, ~40, short dark hair, short beard, blue eyes.
-- **Raw output:** 834x1112, 24fps, 5.04s, 1.7 MB (`.scratch/vidout/portrait/1788442933055-35hhiwlr2qe.mp4`)
+- **kie task id:** `ecee379db85e23a81a1f5bdbde3f2a5d` (regen — replaces `32263a582295693a3d2709f76ac798c7`, which used a wrong fallback source)
+- **Params:** `resolution=720p`, `aspect_ratio=3:4`, `duration=5`, `generate_audio=false`, plus `first_frame_url` **and** `last_frame_url` both set to the source image (to bias toward a loop-friendly clip)
+- **Source image:** `/Users/d.bilukcha/work/landing/assets/img/portrait.jpg` (1167×1500 — the real
+  dark editorial portrait from ticket 02: dark henley, charcoal background, warm amber rim light
+  on the left of the face, calm direct gaze)
+- **Subject:** Dmytro Bilukha, ~40, short dark hair, short beard.
+- **Raw output:** 834x1112, 24fps, 5.04s, 1.4 MB (`.scratch/vidout/portrait/1788444163600-oh2dmxadmf.mp4`)
+- **Credits:** 205 (balance after: 9362).
 - **Prompt:**
 
 ```
-Subtle photorealistic cinemagraph, micro-motion only. A man about 40 with short
-dark hair, short beard and blue eyes stays calm and still, looking slightly off
-camera. Very gentle breathing motion in the chest and shoulders, a faint warm
-rim-light flicker along the edge of his face and hair, and one single slow
-natural eye blink. No head turn, no expression change, no camera movement, the
-background stays completely static. Quiet, understated, seamless loop. Preserve
-the exact face, hair, beard and lighting of the source image.
+Subtle photorealistic cinemagraph of a calm man about 40 with short dark hair
+and a short beard, wearing a dark henley, against a static charcoal background
+with a warm amber rim light on the left side of his face. Micro-motion only:
+very gentle breathing in the shoulders and chest, and one single slow natural
+eye blink. The amber rim light stays almost perfectly constant with only an
+almost-imperceptible shift in intensity. No head turn, no expression change, no
+smile, no camera movement, the background stays completely static and unchanged.
+He holds a calm direct gaze into the lens the entire time. Preserve the exact
+face, hair, beard, clothing and lighting of the source image. Quiet, understated,
+seamless loop, first and last frame nearly identical. Do not let the backlight
+swell or bloom, do not make any skin or body part glow translucent.
 ```
 
-- **Post (seamless loop = boomerang forward+reverse; the model ramped the rim
-  light over the whole clip, so a direct head/tail loop would pop — boomerang
-  avoids it. Result is ~10s, not ~5s):**
+- **Post (seamless loop = crossfade tail over head. Raw first/last frames are near-identical
+  — clean blink at ~3.4–4.0s, calm eyes-open at both ends — so a short 0.6s crossfade of the
+  tail into the head hides the residual breathing-phase offset. 5.0s → 4.46s):**
 
 ```bash
 ffmpeg -i RAW.mp4 -filter_complex \
-"[0]scale=630:840[s];[s]split[a][b];[b]reverse,select='gt(n\,0)',setpts=N/FRAME_RATE/TB[br];[a][br]concat=n=2:v=1:a=0,format=yuv420p[v]" \
--map "[v]" -an -c:v libx264 -profile:v high -pix_fmt yuv420p -movflags +faststart -crf 24 -preset veryslow portrait-cinemagraph.mp4
+"[0]scale=720:-2[s];[s]split[body][pre];[body]trim=0.6,setpts=PTS-STARTPTS[body];[pre]trim=0:0.6,setpts=PTS-STARTPTS[pre];[body][pre]xfade=transition=fade:duration=0.6:offset=3.8,format=yuv420p[v]" \
+-map "[v]" -an -c:v libx264 -profile:v high -pix_fmt yuv420p -movflags +faststart -crf 20 -preset veryslow portrait-cinemagraph.mp4
 
-ffmpeg -i portrait-cinemagraph.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 33 -row-mt 1 portrait-cinemagraph.webm
+ffmpeg -i portrait-cinemagraph.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 30 -row-mt 1 portrait-cinemagraph.webm
 ffmpeg -i portrait-cinemagraph.mp4 -vframes 1 -q:v 2 portrait-poster.jpg
 ```
 
-- **Final:** 630x840, 10.04s. mp4 450 KB (H.264 yuv420p faststart), webm 250 KB (VP9), poster 40 KB.
+- **Final:** 720x960, 4.46s. mp4 357 KB (H.264 yuv420p faststart), webm 134 KB (VP9), poster 55 KB.
+- **Motion:** gentle breathing in the shoulders/chest, one slow natural blink around the middle,
+  a barely-perceptible flicker in the amber rim light. No head turn, no expression change, no
+  camera move, background static. Calm direct gaze throughout.
 
 ---
 
@@ -88,7 +98,7 @@ kie run bytedance/seedance-2 --prompt "<hero prompt>" \
   --wait --download ./hero --json
 
 kie run bytedance/seedance-2 --prompt "<portrait prompt>" \
-  --image <source.jpg> \
+  --set first_frame_url=./assets/img/portrait.jpg --set last_frame_url=./assets/img/portrait.jpg \
   --set resolution=720p --set aspect_ratio=3:4 --set duration=5 --set generate_audio=false \
   --wait --download ./portrait --json
 ```
