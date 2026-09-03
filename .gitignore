@@ -9,3 +9,6 @@ Thumbs.db
 
 # working notes
 .scratch/
+
+# claude code runtime
+.claude/
