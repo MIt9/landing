@@ -117,6 +117,32 @@
   /* wide blocks scroll inside their own container */
   .scroll-x { overflow-x: auto; max-width: 100%; }
 
+  /* ---- About section ---- */
+  .about__layout {
+    display: grid;
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+  }
+  .about__bio p { max-width: 42rem; }
+  .about__bio p + p { margin-top: var(--space-m); }
+  .about__video {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    background: var(--bg);
+    /* soft edge fade, same family as the hero portrait mask */
+    -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent);
+    mask-image: linear-gradient(180deg, #000 82%, transparent);
+  }
+  @media (min-width: 820px) {
+    .about__layout {
+      grid-template-columns: 1fr minmax(0, 21rem);
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+    .about__media { order: 1; }
+  }
+
   /* ---- Impact section ---- */
   .impact__grid {
     display: grid;
@@ -579,7 +605,23 @@
     </div>
     <a class="hero__scroll" href="#about">Scroll</a>
   </section>
-  <section id="about"><span class="label">About</span><h2 data-reveal>about</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
+  <section id="about">
+    <span class="label">About</span>
+    <h2 data-reveal>From the wrestling mat to the merge queue</h2>
+    <div class="about__layout">
+      <div class="about__media" data-reveal>
+        <video class="about__video" muted loop playsinline preload="metadata"
+               poster="assets/video/portrait-poster.jpg" aria-label="Portrait of Dmytro Bilukha">
+          <source src="assets/video/portrait-cinemagraph.webm" type="video/webm">
+          <source src="assets/video/portrait-cinemagraph.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="about__bio">
+        <p data-reveal>Master of Sports in Greco-Roman wrestling — five-time regional champion, bronze at the Ukrainian Universiade. Before IT I coached wrestling, and the job was already the one I do now: set the standard, drill the fundamentals, keep the group ahead of any one ego.</p>
+        <p data-reveal>A decade later I'm doing the same job in JavaScript. Ten-plus years in, developer to Tech Lead, five-plus engineers mentored to senior. Based in Vinnytsia, Ukraine; work remote; go home to a wife, three kids, a dog, a cat, and a fish.</p>
+      </div>
+    </div>
+  </section>
   <section id="impact">
     <span class="label">Impact</span>
     <h2 data-reveal>The numbers behind the work</h2>
@@ -905,6 +947,12 @@
         else target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
       });
     }
+  }
+
+  // ---- About: same autoplay gate as the hero (poster stays on mobile / reduced-motion) ----
+  var aboutVideo = document.querySelector("#about .about__video");
+  if (aboutVideo && !reduceMotion && !window.matchMedia("(max-width: 768px)").matches) {
+    aboutVideo.play().catch(function () {});
   }
 })();
 </script>
