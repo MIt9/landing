@@ -1,46 +1,49 @@
 # Image sources — reproducible generation record
 
-All imagery generated via the KIE API (kie.ai) using the `kie` CLI (`kie-media-cli`),
-per ticket `02-imagery-generation.md`.
+**Art direction: "The Weekly Circular"** — the site is a broadsheet newspaper /
+supermarket promo leaflet. Newsprint palette: paper `#FAF7F0`, ink `#1B1A17`,
+promo-red `#E4002B`, highlight-yellow `#FFD200`. All imagery is black-and-white /
+neutral greyscale; the site applies any tint in CSS.
 
-Subject: Dmytro Bilukha — man ~40, short dark hair (greying at the temples),
-short dark beard, blue eyes, athletic former Greco-Roman wrestler build.
+(Supersedes the previous dark-charcoal / amber `#F5A524` direction. The video
+assets from that direction were deleted — the newspaper direction has no video.)
 
-Face reference images (passed as `--image`):
+Subject: Dmytro Bilukha — man mid-40s, short dark hair greying at the sides,
+short dark beard, blue-grey eyes, athletic former Greco-Roman wrestler build.
+
+Face reference images (passed as `--image`, auto-uploaded by the CLI):
 - `/Users/d.bilukcha/work/resume/photo/photo_2026-09-03_15-20-42.jpg` (front, neutral)
 - `/Users/d.bilukcha/work/resume/photo/photo_2026-09-03_15-20-47.jpg` (3/4 view)
 
-Brand palette: dark charcoal / near-black background `#0a0a0c`, amber accent `#F5A524`.
+Tooling: `kie` CLI (`kie-media-cli` 0.3.1), model `google/nano-banana-edit`
+(reference-image edit) and `google/nano-banana` (text-to-image). Local
+post-processing with `ffmpeg`, `cwebp`, `avifenc`, `rsvg-convert`, `sips`.
 
 ---
 
-## 1. portrait.jpg / portrait.webp / portrait.avif
+## 1. portrait.jpg / portrait.webp / portrait.avif  (1280 x 1600, greyscale)
 
-- **Model:** `google/nano-banana-edit` (the `nano-banana` family; `-edit` is the
-  variant that accepts reference images — plain `google/nano-banana` is text-only)
-- **KIE task id:** `c62c8cfe9f9dba66ea3cfa07361341c7`
+- **Model:** `google/nano-banana-edit`
+- **KIE task id:** `adddbc29fec9784a6f0a8a9a31444a18`
 - **Params:** `aspect_ratio=4:5`, `output_format=jpeg`
-- **Reference images:** the two face-reference photos above (both passed with `--image`)
-- **Raw output:** 896 x 1152 JPEG → `image_67b8d303a915f64e882ee813801957d3.jpg`
-- **Post-processing:** upscaled to 1167 x 1500 with ImageMagick (Lanczos + light unsharp),
-  then encoded to JPEG (q88), WebP (`cwebp -q 82`), AVIF (`avifenc --min 20 --max 32 -s 4`)
+- **Reference images:** the two face-reference photos above (both `--image`)
+- **Raw output:** 896 x 1152 JPEG (`image_2cc78225d992a9f2f0380f8ff623c31e.jpg`)
 
 **Prompt:**
 
-> Editorial cinematic headshot of the same man from the reference photos — keep his
-> face exactly recognizable: man about 40, short dark hair slightly greying at the
-> temples, short dark beard, blue eyes, athletic former-wrestler build, broad
-> shoulders. Wardrobe: a dark charcoal henley shirt. Lighting: dark charcoal
-> near-black studio background, warm amber (#F5A524) rim light along the edge of his
-> face and shoulder, soft key light on the face. Shallow depth of field, background
-> softly blurred. Calm, confident, relaxed expression, mouth closed, looking toward
-> camera. Natural realistic skin texture with visible pores, not plastic, not
-> over-retouched. Cinematic color grade, warm highlights, cool shadows. Framing:
-> head and shoulders with generous headroom, subject positioned slightly to the
-> right so there is empty negative space on the left for text. Vertical portrait
-> orientation, high resolution.
+> documentary black-and-white environmental portrait of the same man from the
+> reference photos, keep him exactly recognizable: man mid-40s, short dark hair
+> greying at the sides, short dark beard, blue-grey eyes, athletic ex-wrestler
+> build, broad shoulders. Wearing a plain dark crew-neck shirt. Newspaper
+> front-page press photography. Direct calm gaze straight to camera, mouth
+> closed, neutral serious expression. Plain mid-grey seamless studio background.
+> Hard even frontal light, sharp focus edge to edge, high micro-contrast,
+> visible skin texture and pores, 50mm lens, editorial press photo. Head and
+> shoulders, subject centered, generous headroom. NO rim light, NO coloured
+> light, NO shallow depth of field, NO bokeh, NO vignette. Genuinely
+> black-and-white neutral greyscale.
 
-```
+```bash
 kie run google/nano-banana-edit \
   --image /Users/d.bilukcha/work/resume/photo/photo_2026-09-03_15-20-42.jpg \
   --image /Users/d.bilukcha/work/resume/photo/photo_2026-09-03_15-20-47.jpg \
@@ -49,47 +52,80 @@ kie run google/nano-banana-edit \
   --wait --download ./out --json
 ```
 
+**Post-processing** (upscale to 1280x1600, force true greyscale, encode):
+
+```bash
+ffmpeg -y -i image_2cc78225d992a9f2f0380f8ff623c31e.jpg \
+  -vf "scale=1280:1600:flags=lanczos,format=gray" portrait_grey.png
+ffmpeg -y -i portrait_grey.png -q:v 2 portrait.jpg          # ~112 KB
+cwebp -q 82 portrait_grey.png -o portrait.webp              # ~38 KB
+avifenc --min 20 --max 34 -s 4 -d 8 portrait_grey.png portrait.avif   # ~19 KB
+```
+
+Verified neutral: `ffmpeg -i portrait.jpg -vf signalstats ...` → SATAVG 0.
+
 ---
 
-## 2. og-image.jpg  (1200 x 630, Open Graph / social card)
+## 2. shelf.jpg / shelf.webp  (1600 x 914, greyscale) — mid-page section break
 
-Two-step: (a) generate a wide dark portrait with negative space, (b) composite text locally.
-
-### (a) Background plate
-
-- **Model:** `google/nano-banana-edit`
-- **KIE task id:** `58dcd4b0295edacd6e21b9a3a3fc978f`
+- **Model:** `google/nano-banana` (text-to-image)
+- **KIE task id:** `8e00e7501a0973b9d8ba63b18d438169`
+  (first attempt `df5bad61ff1e92825ef09d56c2cd0d97` was too sparse — rejected)
 - **Params:** `aspect_ratio=16:9`, `output_format=jpeg`
-- **Reference images:** the two face-reference photos + the portrait from step 1
-  (`image_67b8d303a915f64e882ee813801957d3.jpg`), all passed with `--image`
-- **Raw output:** 1344 x 768 JPEG → `image_539f63c02f3c4d848b9f4ffec28633fc.jpg`
+- **Raw output:** 1344 x 768 JPEG (`image_b3d9a758b345e1cc03bef9e7392c5ed2.jpg`)
 
 **Prompt:**
 
-> Wide cinematic banner portrait of the same man from the reference photos — keep
-> his face exactly recognizable: man about 40, short dark hair greying slightly at
-> the temples, short dark beard, blue eyes, athletic former-wrestler build.
-> Wardrobe: dark charcoal henley shirt. He is positioned on the RIGHT third of a
-> wide horizontal frame, body angled slightly toward center, calm confident
-> expression looking at camera. The LEFT two-thirds of the frame is empty dark
-> charcoal near-black negative space (for text overlay). Lighting: warm amber
-> (#F5A524) rim light on the edge of his face and shoulder, soft key light, deep
-> shadows. Shallow depth of field, cinematic color grade. Wide 1.9:1 horizontal
-> composition, high resolution.
+> tight graphic black-and-white close-up photograph of supermarket shelf rails
+> stacked in three or four horizontal rows that FILL THE ENTIRE FRAME edge to
+> edge, each metal rail crammed with blank white price-tag holders and empty
+> promo sticker clips, retail shelf-edge vernacular. Shot dead flat and frontal
+> like documentary photography, extreme high contrast monochrome, deep black
+> shadows between shelves, bright blown highlights on the labels, hard raking
+> light, sharp gritty focus, heavy newsprint grain. NO readable text, NO
+> numbers, NO prices, NO barcodes, NO brand logos, blank label faces only.
+> Dense, busy, graphic composition with no empty background.
 
-### (b) Text composite (local, no API)
+```bash
+kie run google/nano-banana --prompt "<above>" \
+  --set aspect_ratio=16:9 --set output_format=jpeg \
+  --wait --download ./out-shelf2 --json
+```
 
-- Plate resized to cover 1200 x 630 (`magick -resize 1200x630^ -extent 1200x630`)
-- Left-to-right dark gradient scrim (`#0a0a0c` 0.85 → 0 alpha) for text contrast
-- Amber accent rule (`#F5A524`, 64 x 6 px)
-- Text (Arial via `rsvg-convert`): "Dmytro Bilukha" 80px bold white,
-  "Frontend Tech Lead" 37px `#F5A524`
-- SVG built by `mk_og_svg.py` (in scratchpad), rasterized with `rsvg-convert`,
-  encoded JPEG q82 4:2:0 → 40 KB
+**Post-processing:**
+
+```bash
+ffmpeg -y -i image_b3d9a758b345e1cc03bef9e7392c5ed2.jpg \
+  -vf "scale=1600:-2:flags=lanczos,format=gray" shelf_grey.png
+ffmpeg -y -i shelf_grey.png -q:v 6 shelf.jpg    # ~282 KB (grain-heavy)
+cwebp -q 70 shelf_grey.png -o shelf.webp        # ~287 KB
+```
+
+---
+
+## 3. og-image.jpg  (1200 x 630, < 200 KB) — Open Graph / social card
+
+Built locally as an SVG broadsheet masthead, no API. The greyscale portrait from
+step 1 is embedded as a base64 data URI in the right-hand column.
+
+- Builder script: `assets/img/mk_og.py` (committed next to the images) — writes `og.svg`
+- Layout: paper `#FAF7F0` ground; ink `#1B1A17` nameplate rules + type;
+  Arial Black wordmark "DMYTRO BILUKHA" fitted with `textLength`;
+  promo-red `#E4002B` 6px rule under the masthead + a red "SPECIAL ISSUE" tag;
+  dateline row "FRONTEND TECH LEAD · VINNYTSIA, UKRAINE · THE WEEKLY CIRCULAR";
+  Georgia headline "Ten years building the storefront for Ukraine's largest
+  grocer"; portrait in a bordered right column (`xMidYMid slice`).
+- Fonts: system Arial Black + Georgia (macOS `/System/Library/Fonts/Supplemental`).
+
+```bash
+python3 mk_og.py assets/img/portrait.jpg og.svg
+rsvg-convert -w 1200 -h 630 og.svg -o og.png
+sips -s format jpeg -s formatOptions 82 og.png --out og-image.jpg   # ~109 KB
+```
 
 ---
 
 ## Cost
 
-KIE credits: 10026 → 9567 = **459 credits (~$2.30)** for 2 generations
-(nano-banana-edit "4K" tier + reference-image uploads).
+KIE credits: 9362 → 9350 = **12 credits (~$0.06)** for 3 generations
+(1 nano-banana-edit + 2 nano-banana).
