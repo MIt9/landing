@@ -1,52 +1,40 @@
 #!/usr/bin/env python3
-"""Build the Weekly Circular OG image SVG. arg1 = greyscale portrait path."""
-import sys, base64, pathlib
+"""Build the "Hold the position" OG card SVG -> stdout to arg1.
+Cold blue-graphite ground, bone grotesque headline, cobalt left rail, acid-yellow underline."""
+import sys, pathlib
 
-portrait = sys.argv[1]
-b = pathlib.Path(portrait).read_bytes()
-uri = "data:image/jpeg;base64," + base64.b64encode(b).decode()
+BG    = "#0E1217"
+VIGN  = "#080A0D"
+BONE  = "#F2EEE4"
+COBALT= "#2B4CF0"
+ACID  = "#F5E003"
 
-PAPER = "#FAF7F0"
-INK = "#1B1A17"
-RED = "#E4002B"
+svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="v" cx="50%" cy="42%" r="75%">
+      <stop offset="55%" stop-color="{VIGN}" stop-opacity="0"/>
+      <stop offset="100%" stop-color="{VIGN}" stop-opacity="0.9"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="{BG}"/>
+  <rect width="1200" height="630" fill="url(#v)"/>
 
-# text column: x 44 .. 786 (width 742); portrait column x 802 .. 1156
-svg = f'''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="{PAPER}"/>
-  <!-- portrait column -->
-  <clipPath id="pc"><rect x="802" y="44" width="354" height="542"/></clipPath>
-  <image xlink:href="{uri}" x="742" y="44" width="474" height="542"
-         preserveAspectRatio="xMidYMid slice" clip-path="url(#pc)"/>
-  <rect x="802" y="44" width="354" height="542" fill="none" stroke="{INK}" stroke-width="1.5"/>
-
-  <!-- nameplate -->
-  <line x1="44" y1="46" x2="786" y2="46" stroke="{INK}" stroke-width="3"/>
-  <text x="44" y="112" font-family="Arial Black, Arial, sans-serif" font-weight="900"
-        font-size="74" fill="{INK}" textLength="742" lengthAdjust="spacingAndGlyphs"
-        letter-spacing="-1">DMYTRO BILUKHA</text>
-  <line x1="44" y1="126" x2="786" y2="126" stroke="{INK}" stroke-width="1.5"/>
-  <rect x="44" y="132" width="742" height="6" fill="{RED}"/>
-
-  <!-- dateline -->
-  <text x="44" y="164" font-family="Arial, Helvetica, sans-serif" font-weight="700"
-        font-size="15.5" fill="{INK}" letter-spacing="3"
-        textLength="742" lengthAdjust="spacingAndGlyphs">FRONTEND TECH LEAD  ·  VINNYTSIA, UKRAINE  ·  THE WEEKLY CIRCULAR</text>
-  <line x1="44" y1="178" x2="786" y2="178" stroke="{INK}" stroke-width="1"/>
-
-  <!-- headline -->
-  <text font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="{INK}" font-size="45">
-    <tspan x="44" y="264">Ten years building the</tspan>
-    <tspan x="44" y="316">storefront for Ukraine&#8217;s</tspan>
-    <tspan x="44" y="368">largest grocer</tspan>
-  </text>
+  <!-- cobalt left rail -->
+  <rect x="0" y="0" width="3" height="630" fill="{COBALT}"/>
 
   <!-- kicker -->
-  <rect x="44" y="430" width="150" height="30" fill="{RED}"/>
-  <text x="119" y="451" font-family="Arial Black, Arial, sans-serif" font-weight="900"
-        font-size="15" fill="{PAPER}" letter-spacing="1" text-anchor="middle">SPECIAL ISSUE</text>
-  <text x="210" y="451" font-family="Georgia, serif" font-style="italic" font-size="19" fill="{INK}">Building software for how Ukraine actually shops.</text>
+  <text x="90" y="330" font-family="Arial, Helvetica, sans-serif" font-weight="700"
+        font-size="19" letter-spacing="6" fill="{BONE}" fill-opacity="0.55">DMYTRO BILUKHA</text>
 
-  <line x1="44" y1="586" x2="786" y2="586" stroke="{INK}" stroke-width="3"/>
+  <!-- headline lower-left -->
+  <text font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif" font-weight="900"
+        fill="{BONE}" font-size="120" letter-spacing="-3">
+    <tspan x="86" y="446">FRONTEND</tspan>
+    <tspan x="86" y="554">TECH LEAD</tspan>
+  </text>
+
+  <!-- acid-yellow underline -->
+  <rect x="90" y="578" width="150" height="2" fill="{ACID}"/>
 </svg>'''
-pathlib.Path(sys.argv[2]).write_text(svg)
-print("wrote", sys.argv[2])
+pathlib.Path(sys.argv[1]).write_text(svg)
+print("wrote", sys.argv[1])
