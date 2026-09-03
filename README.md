@@ -1,58 +1,100 @@
 # Dmytro Bilukha — personal site
 
-**Art direction: "The Weekly Circular".** The page is built as a broadsheet
-newspaper / supermarket promo leaflet: a masthead nameplate, a dateline, one
-lead story, heavy horizontal ink rules, multi-column running text, price-tag
-metric tiles, a classifieds grid, an aisle directory. Newsprint palette.
+**Art direction: "Hold the position".** Coach to developer to tech lead, told
+as one job: set the stance, hold the standard, move the group forward. The page
+is a sequence of *holds* — the viewport pins, one idea is worked through kinetic
+type and generated motion as you scroll, then releases to the next. `pin: true`
+is both the wrestling term and the ScrollTrigger mechanic.
 
 Single static `index.html`. All CSS + JS inline. **No build step, no bundler,
-no `package.json`, and no CDN scripts** — the whole runtime is ~40 lines of
-vanilla JS (email assembly, YouTube facade, one IntersectionObserver).
+no `package.json`.** The only external files are four pinned CDN scripts
+(GSAP core, ScrollTrigger, SplitText, Lenis, ~70 KB gzipped, all `defer`).
 
 ## Palette
 
-| Role | Hex | Use |
-|---|---|---|
-| Paper (background) | `#FAF7F0` | the only ground |
-| Ink (text, rules, borders) | `#1B1A17` | |
-| Promo red | `#E4002B` | CTAs, the masthead rule, price-tag stickers (large text only) |
-| Highlight yellow | `#FFD200` | fill behind price numerals, highlighter marks (never a text colour) |
+Cold graphite ground, bone text, one cobalt accent, one signal-yellow spotlight.
+Committed dark theme (`color-scheme: dark`) — the design is a single look.
 
-Light theme only, committed (`color-scheme: light`). A newspaper is a paper
-artifact; there is no dark mode.
+| Token | Hex | Role |
+|---|---|---|
+| `--bg` | `#0E1217` | page ground |
+| `--bg-deep` | `#080A0D` | vignette edges, gutters, CTA label |
+| `--bg-raise` | `#161C23` | pinned panel surface, video frames |
+| `--bone` | `#F2EEE4` | primary text |
+| `--bone-dim` | `#9CA0A6` | secondary text, mono labels |
+| `--bone-faint` | `#4A5158` | hairlines only, never text |
+| `--cobalt` | `#2B4CF0` | scroll rail, focus rings, link underlines, active index |
+| `--cobalt-lift` | `#4E6BFF` | body-link text colour (AA on bg) |
+| `--signal` | `#F5E003` | the one key number per data moment, primary CTA, pinned-title underline |
+
+Every image and clip is matte, print-sharp, cold-graded. No glow anywhere. A
+fixed grain layer sits over the page (skipped under reduced motion).
 
 ## Fonts
 
 Self-hosted `woff2` under `assets/fonts/`, Latin subset, `font-display: swap`.
-The two above-the-fold weights (Archivo Black, Archivo 800) are preloaded.
+Bricolage variable + General Sans 400 are preloaded; the hero poster is
+preloaded `fetchpriority="high"`.
 
-| Family | Weights | Role |
+| Family | Axes / weights | Role |
 |---|---|---|
-| Archivo | 400, 600, 800 | section nameplates, lead headline, price numerals, UI |
-| Archivo Black | 400 | masthead nameplate, drop cap |
-| Newsreader | 400, 400 italic, 600 | all running text, drop-cap article, captions in prose |
-| Spline Sans Mono | 400, 500 | dateline, classifieds, the colophon |
+| Bricolage Grotesque | variable `wght` 200–800 | display, all headings, kinetic type. The signature scrub loads `wght` 320→780 while a section holds. |
+| General Sans | 400 / 500 / 600 | body + UI |
+| Spline Sans Mono | 400 / 500 | evidence only — metric numbers, section index, timeline years, repo paths, credit |
 
-Source: [Fontsource](https://fontsource.org/) CDN, pinned to `@latest` at
-download time. These families ship no Cyrillic subset on Fontsource and the
-page has no Cyrillic text, so only Latin is bundled.
+Sources: Bricolage from [Fontsource](https://fontsource.org/) (`:vf` latin);
+General Sans from [Fontshare](https://www.fontshare.com/fonts/general-sans).
 
 ## Motion
 
-The page "sets like it is being printed": the masthead nameplate ink-settles
-once on load, and each section's hairline rule draws once when it scrolls into
-view (one `IntersectionObserver`). **Nothing moves on scroll.** No Lenis, no
-GSAP, no scroll hijacking. Under `prefers-reduced-motion: reduce` the page just
-renders — no load animation, no rule draw.
+GSAP + ScrollTrigger + SplitText, driven through Lenis smooth-scroll
+(`lerp: 0.09`). All ScrollTriggers are built after `window.load` and after
+`document.fonts.load`, wrapped in `gsap.matchMedia`:
+
+- **Desktop (`min-width: 901px`)** — full rig. Six `100dvh` sections pin for a
+  scroll and are worked through during the hold: hero headline weight loads and
+  a cobalt hairline sweeps; the About manifesto unmasks line by line; **Impact
+  is a horizontal scroll hijack** through six full-screen number plates
+  (`x` transform on an inner track, never body overflow); the Experience
+  timeline draws and milestones snap in with a cross-fading background year;
+  Cases is a sticky-stack of two video cards; Selected Work is a scrubbed
+  row-stagger. Skills does **not** pin (pattern break) and carries the page's
+  one marquee, its `timeScale` driven by scroll velocity. Contact does not pin;
+  the word "code" punches to signal-yellow on enter.
+- **Mobile (`pointer: coarse`, `max-width: 900px`)** — no pins, no hijack, no
+  Lenis. Light `IntersectionObserver` reveals, numbers count once, one video at
+  a time.
+- **`prefers-reduced-motion: reduce`** — no Lenis, no GSAP, native scroll,
+  videos show their posters, grain off. Each section is a designed static
+  layout, not a degraded one.
+
+The section index overlay (top-bar **Index** button) is the keyboard skip
+mechanism: focus-trapped, `Esc` closes, links call `lenis.scrollTo`. A
+visually-hidden skip link to `#main` is also present.
+
+**Not built:** the blueprint's global directional 1/8 snap. With six pins plus
+the 6400 px horizontal Impact hijack the scroll distance per section is wildly
+uneven, so a uniform or section-boundary snap either lands nowhere meaningful or
+flings the viewer through the whole horizontal pan on a short pause. Lenis plus
+the pins already give the sectioned cadence. See the comment in `index.html`.
 
 ## Media
 
-No video anywhere. Imagery is black-and-white, generated with
-[`kie-media-cli`](https://github.com/MIt9/kie-media-cli) — see
-`assets/img/SOURCES.md` for the reproducible generation record. The two
-case-study clips use a lite-embed facade: a local thumbnail plus a real play
-button; the `youtube-nocookie.com` iframe is created only on click, so no
+Four short clips under `assets/video/` (`hero`, `impact-a`, `impact-b`,
+`work-texture`), each `mp4` + `webm` + an `avif` poster. All are
+`preload="none"` with `<source data-src>` so nothing loads until an
+`IntersectionObserver` (`rootMargin: "100% 0px"`) brings the section within one
+viewport; never more than one plays at once; all pause on exit. Imagery
+generated with [`kie-media-cli`](https://github.com/MIt9/kie-media-cli) — see
+`assets/img/SOURCES.md`.
+
+The two case-study clips use a lite-embed facade: a local thumbnail plus a real
+play button; the `youtube-nocookie.com` iframe is created only on click, so no
 YouTube request fires on page load.
+
+Contact e-mail is assembled in JS (`["siniidrozd","gmail.com"].join("@")`) and
+never appears in the HTML source; `<noscript>` points to LinkedIn. No phone
+number anywhere.
 
 ## Local preview
 
@@ -107,13 +149,15 @@ Each push to `main` via the Git integration also redeploys automatically.
 
 ```
 index.html
-assets/img/      black-and-white imagery + yt-*.jpg thumbnails + SOURCES.md
-assets/fonts/    self-hosted woff2 (Archivo, Archivo Black, Newsreader, Spline Sans Mono)
+assets/img/      cold-graded imagery + og-image + yt-*.jpg thumbnails + SOURCES.md
+assets/video/    hero / impact-a / impact-b / work-texture, each mp4+webm+avif poster
+assets/fonts/    self-hosted woff2 (Bricolage Grotesque variable, General Sans 400/500/600, Spline Sans Mono 400/500)
 cv/dmytro-bilukha-cv.pdf
 ```
 
 ## Sections (in order)
 
-Front page (masthead) · The Long Read (about) · This Week's Prices (impact) ·
-The Career Ledger (experience) · Case Files (cases) · The Classifieds (selected
-work) · Aisle Directory (skills) · The Back Page (contact) · colophon (footer).
+01 Hero (`FRONTEND TECH LEAD`) · 02 About (the manifesto) · 03 Impact (six
+number plates, horizontal) · 04 Experience (ten years, one company) · 05 Cases
+(two walkthroughs) · 06 Selected work (five repos) · 07 Skills (four groups +
+marquee) · 08 Contact (`Still coaching. Now in code.`) · colophon.
