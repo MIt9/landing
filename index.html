@@ -320,6 +320,103 @@
   }
   .work__more:hover { color: var(--text); border-color: var(--text); }
 
+  /* ---- Skills section ---- */
+  .skills__groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: var(--space-l) var(--space-xl);
+    margin-top: var(--space-xl);
+  }
+  .skills__group h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--space-s);
+  }
+  .skills__tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+  .skills__tags li {
+    border: 1px solid var(--line);
+    padding: var(--space-2xs) var(--space-s);
+    font-size: var(--step--1);
+    color: var(--text);
+  }
+
+  /* ---- Contact section ---- */
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-top: var(--space-xl);
+  }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step--1);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-m);
+    border: 1px solid var(--accent);
+    color: var(--text);
+    background: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .btn--primary { background: var(--accent); color: var(--bg); }
+  .btn:hover, .btn:focus-visible { background: var(--accent); color: var(--bg); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .contact__noscript { margin: 0; color: var(--muted); font-size: var(--step--1); }
+  .contact__links {
+    list-style: none;
+    margin: var(--space-xl) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    max-width: 30rem;
+  }
+  .contact__links a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+  }
+  .contact__links a:hover, .contact__links a:focus-visible { border-color: var(--accent); }
+  .contact__links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---- Footer ---- */
+  .footer {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-l);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-l);
+    align-items: baseline;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .footer p { margin: 0; max-width: 40rem; }
+  .footer a { color: var(--muted); }
+  .footer a:hover { color: var(--text); }
+  .footer__top {
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+  }
+  .footer__top:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
   /* ---- Scroll-reveal helper (JS toggles .is-in) ---- */
   [data-reveal] {
     opacity: 0;
@@ -487,9 +584,65 @@
     </div>
     <a class="work__more" href="https://github.com/MIt9" target="_blank" rel="noopener">More on GitHub →</a>
   </section>
-  <section id="skills"><span class="label">Skills</span><h2 data-reveal>skills</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
-  <section id="contact"><span class="label">Contact</span><h2 data-reveal>contact</h2><p data-reveal>Placeholder — filled by a later ticket.</p></section>
+  <section id="skills">
+    <span class="label">Skills</span>
+    <h2 data-reveal>What I work with</h2>
+    <p data-reveal>A decade of frontend at the core, widening into backend, AI tooling, and the infrastructure and practices that keep delivery honest.</p>
+    <div class="skills__groups">
+      <div class="skills__group" data-reveal>
+        <h3>Frontend</h3>
+        <ul class="skills__tags">
+          <li>React</li><li>Redux</li><li>TypeScript</li><li>Next.js</li><li>Angular</li><li>CSS Modules</li>
+        </ul>
+      </div>
+      <div class="skills__group" data-reveal>
+        <h3>Backend</h3>
+        <ul class="skills__tags">
+          <li>Node.js</li><li>GraphQL</li><li>REST APIs</li>
+        </ul>
+      </div>
+      <div class="skills__group" data-reveal>
+        <h3>AI / LLM</h3>
+        <ul class="skills__tags">
+          <li>MCP servers</li><li>Agentic workflows</li><li>Claude Code</li><li>AI-assisted development</li>
+        </ul>
+      </div>
+      <div class="skills__group" data-reveal>
+        <h3>Infrastructure</h3>
+        <ul class="skills__tags">
+          <li>AWS EKS</li><li>Microservices</li><li>CI/CD (GitLab, Azure DevOps)</li>
+        </ul>
+      </div>
+      <div class="skills__group" data-reveal>
+        <h3>Practices</h3>
+        <ul class="skills__tags">
+          <li>Code review</li><li>ADR</li><li>Scrum</li><li>A/B testing</li><li>Accessibility (WCAG, screen-reader UX)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section id="contact">
+    <span class="label">Contact</span>
+    <h2 data-reveal>Get in touch</h2>
+    <p data-reveal>Open to conversations about frontend leadership, AI-assisted delivery, and high-traffic commerce work.</p>
+    <div class="contact__actions" data-reveal>
+      <a class="btn btn--primary" id="email-btn" role="button">Email me</a>
+      <a class="btn" href="cv/dmytro-bilukha-cv.pdf">Download CV</a>
+      <noscript><p class="contact__noscript">Enable JavaScript to reveal my email address, or reach me on LinkedIn below.</p></noscript>
+    </div>
+    <ul class="contact__links" data-reveal>
+      <li><a href="https://www.linkedin.com/in/dmytro-bilukha" target="_blank" rel="noopener">LinkedIn — dmytro-bilukha</a></li>
+      <li><a href="https://github.com/MIt9" target="_blank" rel="noopener">GitHub — MIt9</a></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLTvKgymSu0IQ" target="_blank" rel="noopener">YouTube — Product Portfolio</a></li>
+    </ul>
+  </section>
 </main>
+
+<footer class="footer">
+  <p>© 2026 Dmytro Bilukha</p>
+  <p>Built as a single static page. Imagery and video generated with <a href="https://github.com/MIt9/kie-media-cli" target="_blank" rel="noopener">kie-media-cli</a>.</p>
+  <a class="footer__top" href="#hero">Back to top</a>
+</footer>
 
 <!-- ---- CDN libs, pinned exact versions ---- -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
@@ -532,6 +685,14 @@
 
   // Expose for later tickets that add content dynamically.
   window.revealRefresh = function () { ScrollTrigger.refresh(); };
+
+  // ---- Contact: assemble the email address at runtime so it never sits in the source ----
+  var emailBtn = document.getElementById("email-btn");
+  if (emailBtn) {
+    var addr = ["siniidrozd", "gmail.com"].join("@");
+    emailBtn.setAttribute("href", "mailto:" + addr);
+    emailBtn.removeAttribute("role");
+  }
 
   // ---- Cases: lite YouTube embed (facade -> real iframe on click) ----
   document.querySelectorAll(".lite-yt").forEach(function (btn) {
