@@ -53,7 +53,9 @@ GSAP + ScrollTrigger + SplitText, driven through Lenis smooth-scroll
 
 - **Desktop (`min-width: 901px`)** — full rig. Six `100dvh` sections pin for a
   scroll and are worked through during the hold: hero headline weight loads and
-  a cobalt hairline sweeps; the About manifesto unmasks line by line; **Impact
+  a cobalt hairline sweeps; the About manifesto unmasks line by line while the
+  portrait (five frames on an acid-yellow disc) turns from profile to camera —
+  blitted to a `<canvas>` so no frame flashes while decoding; **Impact
   is a horizontal scroll hijack** through six full-screen number plates
   (`x` transform on an inner track, never body overflow); the Experience
   timeline draws and milestones snap in with a cross-fading background year;

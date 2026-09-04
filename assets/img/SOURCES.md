@@ -79,7 +79,45 @@ Prompt:
 
 ---
 
-## portrait.jpg / .webp / .avif  (1000x1500, cold high-contrast monochrome)
+## turn-0…4.webp  (640x640, cold monochrome) — About head-turn sequence
+
+Five head-and-shoulders frames, profile → front, blitted to a canvas as the
+About section scrolls (yellow disc behind). `portrait.*` retired — replaced by
+this.
+
+- **Model:** `google/nano-banana-edit`, `aspect_ratio=1:1`, `output_format=png`
+- **Real source photos** (`/Users/d.bilukcha/work/resume/photo/`):
+  `photo_2026-09-03_15-20-34.jpg` (90° profile),
+  `_15-20-47.jpg` (~35° three-quarter), `_15-20-42.jpg` (0° front).
+
+1. **turn-4 (front, style anchor)** — task `dd3d9ceaaea370010d269a7d8b8be4e9`,
+   from the front photo. Prompt: editorial B&W studio portrait, head-and-
+   shoulders crop below the collarbone, head ~70% of frame height, matte-black
+   crew-neck, cool high-contrast monochrome with cold-blue shadows, soft frontal
+   key + rim, seamless pale white background, calm neutral expression, 35mm grain.
+2. **turn-0 (profile)** — task `c2413401077f75d3ca3ac1c90632cf41`,
+   `--image profile.jpg --image turn-4` → "keep head angle of image 1, match
+   style of image 2 exactly".
+3. **turn-2 (~35°)** — task `cf52afeb9ad59a2a9e5d24e9e648911d`,
+   `--image tq.jpg --image turn-0 --image turn-4` → reproduce image-1 angle in
+   the images-2/3 style.
+4. **turn-1 (~60°)** — task `f4419ed2e073829d21d4a8cc3da401bd`,
+   `--image turn-0 --image turn-2` → "angle halfway between the two".
+5. **turn-3 (~15°)** — task `268215d5361bd03e7a11b20d64f80a77`,
+   `--image turn-2 --image turn-4` → "much closer to front, only a slight turn".
+
+Post: each 1024² PNG → `magick f.png -colorspace Gray -resize 720x720^ -gravity
+center -extent 720x720 -quality 82 turn-N.webp`. Frame order in HTML/JS =
+0 profile … 4 front. ~18–20 KB each.
+
+KIE: 6 × nano-banana-edit @ 4cr = **24 credits (~$0.12)**.
+
+---
+
+## portrait.jpg / .webp / .avif  (1000x1500, cold high-contrast monochrome) — RETIRED
+
+Replaced by the `turn-*` sequence above. Record kept for provenance.
+
 
 - **Model:** `google/nano-banana-edit`
 - **KIE task id:** `db2287f18def4e293b5f6de20af38339`

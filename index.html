@@ -253,7 +253,7 @@
     display:grid; gap:clamp(1.5rem,4vw,3.5rem);
     grid-template-columns:1fr;
   }
-  @media (min-width:860px) { .about-grid { grid-template-columns:1fr minmax(220px, 320px); align-items:start; } }
+  @media (min-width:860px) { .about-grid { grid-template-columns:1fr minmax(240px, 340px); align-items:center; } }
   .manifesto {
     font-size:clamp(1.5rem, 0.7rem + 2.8vw, 3.4rem);
     font-weight:400; line-height:1.12; letter-spacing:-0.015em;
@@ -262,13 +262,23 @@
   }
   .manifesto .ln > span { display:inline-block; }
   .about-fig { margin:0; }
-  .about-fig img {
-    width:100%; aspect-ratio:1000/1500; object-fit:cover;
-    background:var(--bg-raise); border:1px solid var(--bone-faint);
-  }
   .about-fig figcaption {
-    margin-top:.7rem; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--bone-dim);
+    margin-top:0; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--bone-dim); max-width:24ch;
   }
+  .turn { position:relative; width:100%; max-width:320px; aspect-ratio:1; margin:0 auto 3rem; }
+  .turn-disc {
+    position:absolute; inset:0; border-radius:50%;
+    background:var(--signal); transform:translate(9%, 10%);
+  }
+  .turn-frames {
+    position:absolute; inset:0; border-radius:50%; overflow:hidden;
+    border:1px solid var(--bone-faint); background:var(--bg-raise);
+  }
+  .turn-live, .turn-canvas {
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover;
+  }
+  .turn-canvas { z-index:1; }
 
   /* ============ 03 Impact ============ */
   #impact { padding-left:0; padding-right:0; }
@@ -522,11 +532,12 @@
     <div class="about-grid">
       <h2 class="manifesto" id="about-h">I coached wrestlers before I wrote code, and it turned out to be the same job: set the stance, hold the standard, move the group forward.</h2>
       <figure class="about-fig reveal">
-        <picture>
-          <source srcset="assets/img/portrait.avif" type="image/avif">
-          <source srcset="assets/img/portrait.webp" type="image/webp">
-          <img src="assets/img/portrait.jpg" alt="Cold-graded portrait of Dmytro Bilukha, looking to camera." width="1000" height="1500" loading="lazy" decoding="async">
-        </picture>
+        <div class="turn">
+          <span class="turn-disc" aria-hidden="true"></span>
+          <div class="turn-frames">
+            <img class="turn-live" src="assets/img/turn-4.webp" alt="Portrait of Dmytro Bilukha." width="640" height="640" loading="eager" decoding="async">
+          </div>
+        </div>
         <figcaption class="mono">Master of Sports, Greco-Roman &middot; 5x regional champion</figcaption>
       </figure>
     </div>
@@ -941,6 +952,35 @@
       gsap.to(".about-fig", { yPercent: -6, ease: "none",
         scrollTrigger: { trigger: "#about", start: "top top+=40%", end: "+=60%", scrub: true } });
 
+      /* portrait head-turn: preloaded frames blitted to a canvas (no decode flash) */
+      var turnWrap = document.querySelector("#about .turn-frames");
+      var turnImgs = ["turn-0", "turn-1", "turn-2", "turn-3", "turn-4"].map(function (n) {
+        var im = new Image(); im.src = "assets/img/" + n + ".webp";
+        if (im.decode) im.decode().catch(function () {});
+        return im;
+      });
+      var turnCv = document.createElement("canvas");
+      turnCv.width = turnCv.height = 640;
+      turnCv.className = "turn-canvas";
+      turnCv.setAttribute("aria-hidden", "true");
+      turnWrap.appendChild(turnCv);
+      var turnCx = turnCv.getContext("2d");
+      var turnShown = -1;
+      function blitTurn(i) {
+        var im = turnImgs[i];
+        if (!im.complete || !im.naturalWidth) { im.addEventListener("load", function () { if (turnShown === i) blitTurn(i); }, { once: true }); return; }
+        turnCx.clearRect(0, 0, 640, 640);
+        turnCx.drawImage(im, 0, 0, 640, 640);
+      }
+      function showTurn(i) { if (i === turnShown) { return; } turnShown = i; blitTurn(i); }
+      showTurn(0);
+      ScrollTrigger.create({
+        trigger: "#about", start: "top top", end: "+=100%", scrub: true,
+        onUpdate: function (self) {
+          showTurn(Math.max(0, Math.min(turnImgs.length - 1, Math.floor(self.progress * turnImgs.length))));
+        }
+      });
+
       /* 03 Impact - horizontal pan */
       var track = document.querySelector(".impact-track");
       track.classList.add("is-horizontal");
@@ -1073,6 +1113,7 @@
 
       return function () {
         splits.forEach(function (s) { try { s.revert(); } catch (e) {} });
+        turnCv.remove();
         gsap.ticker.remove(raf);
         lenis.destroy();
         window.__lenis = null;
