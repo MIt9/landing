@@ -968,8 +968,9 @@
       var turnCx = turnCv.getContext("2d");
       var turnST, turnShown = -1;
       function loadedFrame(i) {
+        if (i < 0 || i >= TURN_N) return null;
         var im = turnFrames[i];
-        return (im.complete && im.naturalWidth) ? im : null;
+        return (im && im.complete && im.naturalWidth) ? im : null;
       }
       function paintTurn() {
         var p = turnST ? turnST.progress : 0;
