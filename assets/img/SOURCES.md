@@ -79,15 +79,45 @@ Prompt:
 
 ---
 
-## turn-0.webp / turn-1.webp  (720x957, cold mono, ALPHA cut-out) — About portrait
+## assets/video/smile.mp4 — About portrait (CURRENT)
 
-Two head-and-shoulders **cut-outs** (transparent background): `turn-0` right
-profile, `turn-1` front / eyes to camera. In the About section a canvas hard-
-cuts profile → front at the scroll midpoint, over a `--sun` disc (acid-yellow
-`#F5E003`, the client's "sun rising" choice — flip `.turn { --sun }` to
-`var(--cobalt)` for the calmer version) that rises behind him on the scrub
-timeline. `portrait.*` and the
-earlier 5-frame circular turn both retired.
+Scroll-scrubbed video: neutral → restrained warm smile as the About section
+scrolls (`video.currentTime = progress × duration`, never `.play()`). Full-
+bleed in the right column, no circle. **Selective colour**: face/hair cold
+desaturated + lifted (not gloomy), t-shirt vivid acid-yellow `#F5E003` — the
+shirt is the accent that replaced the disc.
+
+Pipeline:
+1. `nano-banana-edit` from `_15-20-42.jpg`: neutral still (yellow tee,
+   selective-colour lifted cold grade, dark charcoal bg, 3:4). Then a second
+   pass on that still → restrained warm closed-mouth smile (eyes crinkle,
+   corners lift), everything else held.
+2. `bytedance/seedance-2` — `first_frame_url`=neutral, `last_frame_url`=smile,
+   3:4, 720p, `generate_audio=false`, `duration=5`, prompt = gradual even
+   expression warm-up, locked-off camera, micro head movement. Task
+   `b2b151fff668267cc7528856f387c2a2`. Raw: 834×1112, 24fps, 5.04s.
+3. Encode for frame-seekable scrub — **15fps, small GOP, faststart**:
+   ```
+   ffmpeg -i RAW.mp4 -an -vf "fps=15,scale=640:-2,format=yuv420p" \
+     -c:v libx264 -profile:v main -level 4.0 -preset slow -crf 23 \
+     -g 5 -keyint_min 5 -sc_threshold 0 -movflags +faststart smile.mp4   # ~580 KB
+   ffmpeg -i RAW.mp4 -an -vf "fps=15,scale=640:-2" -c:v libvpx-vp9 -b:v 0 \
+     -crf 32 -g 5 -row-mt 1 -pix_fmt yuv420p smile.webm                  # ~490 KB
+   ```
+   Poster (`smile-poster.avif` + `.jpg`) = LAST frame (the smile) so the
+   no-JS / reduced-motion / mobile static state faces & smiles at the viewer.
+4. Local static server MUST support HTTP Range (206) or Chrome `<video>`
+   hangs at readyState 0 — `python -m http.server` does NOT; use a range-aware
+   handler (`/tmp/claude-501/rangeserver.py`) or `npx serve`.
+
+KIE: ~4 × nano-banana-edit + 1 × seedance-2 720p ≈ **~280 credits (~$1.40)**.
+
+---
+
+## turn-0.webp / turn-1.webp — RETIRED (alpha cut-outs, disc-behind portrait)
+
+Superseded by `smile.mp4`. Was: `turn-0` right profile + `turn-1` front cut-
+outs, hard-cut on scroll over a rising `--sun` disc.
 
 Design history worth knowing before regenerating:
 - The AI **erases the cauliflower ear** on every frame regardless of prompt, so
