@@ -79,13 +79,21 @@ Prompt:
 
 ---
 
-## assets/video/smile.mp4 — About portrait (CURRENT)
+## assets/img/smile-seq/f01–f28.webp — About portrait (CURRENT)
 
-Scroll-scrubbed video: neutral → restrained warm smile as the About section
-scrolls (`video.currentTime = progress × duration`, never `.play()`). Full-
-bleed in the right column, no circle. **Selective colour**: face/hair cold
-desaturated + lifted (not gloomy), t-shirt vivid acid-yellow `#F5E003` — the
-shirt is the accent that replaced the disc.
+Scroll-flipped **28-frame image sequence** on a `<canvas>`: neutral →
+restrained warm smile as the About section scrolls
+(`ctx.drawImage(frames[round(progress·27)])`). Full-bleed in the right
+column, no circle. **Selective colour**: face/hair cold desaturated + lifted
+(not gloomy), t-shirt vivid acid-yellow `#F5E003` — the shirt is the accent
+that replaced the disc. 560×746, ~12 KB/frame, ~380 KB total.
+
+Was a scroll-scrubbed `<video>` first (`smile.mp4`) — abandoned: `<video>`
+`currentTime` scrub froze on one frame in the client's browser and would not
+load at all in the sandboxed Chrome. Image-sequence-on-canvas is the robust
+technique (Apple product pages) — no decode, no seek, no Range dependency.
+`smile.mp4` / `.webm` removed; `smile-poster.{avif,jpg}` kept as the
+no-JS / reduced-motion / mobile static frame (the smile).
 
 Pipeline:
 1. `nano-banana-edit` from `_15-20-42.jpg`: neutral still (yellow tee,

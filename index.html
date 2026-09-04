@@ -267,10 +267,10 @@
     font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--bone-dim); max-width:24ch;
   }
   .turn {
-    position:relative; width:100%; max-width:360px; aspect-ratio:3/4;
+    position:relative; width:100%; max-width:360px; aspect-ratio:560/746;
     margin:0 auto 1rem; background:var(--bg-raise);
   }
-  .turn-vid, .turn-live {
+  .turn-canvas, .turn-live {
     position:absolute; inset:0; width:100%; height:100%;
     object-fit:cover; object-position:top center;
     will-change:transform;
@@ -528,14 +528,10 @@
     <div class="about-grid">
       <h2 class="manifesto" id="about-h">I coached wrestlers before I wrote code, and it turned out to be the same job: set the stance, hold the standard, move the group forward.</h2>
       <figure class="about-fig reveal">
-        <div class="turn">
-          <video class="turn-vid" muted playsinline preload="auto" poster="assets/video/smile-poster.avif" aria-label="Portrait of Dmytro Bilukha; his expression warms from neutral to a smile as the section scrolls." hidden>
-            <source src="assets/video/smile.mp4" type="video/mp4">
-            <source src="assets/video/smile.webm" type="video/webm">
-          </video>
+        <div class="turn" role="img" aria-label="Portrait of Dmytro Bilukha; his expression warms from neutral to a smile as the section scrolls.">
           <picture>
             <source srcset="assets/video/smile-poster.avif" type="image/avif">
-            <img class="turn-live" src="assets/video/smile-poster.jpg" alt="Portrait of Dmytro Bilukha." width="640" height="854" loading="eager" decoding="async">
+            <img class="turn-live" src="assets/video/smile-poster.jpg" alt="" width="560" height="746" loading="eager" decoding="async">
           </picture>
         </div>
         <figcaption class="mono">Master of Sports, Greco-Roman &middot; 5x regional champion</figcaption>
@@ -952,43 +948,40 @@
       gsap.to(".about-fig", { yPercent: -6, ease: "none",
         scrollTrigger: { trigger: "#about", start: "top top+=40%", end: "+=60%", scrub: true } });
 
-      /* portrait: scroll scrubs a neutral -> smile video */
+      /* portrait: scroll flips through a 28-frame neutral -> smile image sequence on a canvas */
       var turnEl = document.querySelector("#about .turn");
       var turnLive = turnEl.querySelector(".turn-live");
-      var turnVid = turnEl.querySelector(".turn-vid");
-      var turnDur = 0, turnWant = 0, turnPrimed = false, turnRAF = 0;
-
-      turnVid.hidden = false;
-      turnVid.addEventListener("loadedmetadata", function () { turnDur = turnVid.duration || 5; });
-      turnVid.addEventListener("loadeddata", function () { turnLive.hidden = true; primeTurn(); });
-
-      function primeTurn() {
-        if (turnPrimed) return;
-        var p = turnVid.play();
-        if (p && p.then) {
-          p.then(function () { turnPrimed = true; turnVid.pause(); turnVid.currentTime = turnWant; })
-           .catch(function () { turnPrimed = true; }); /* autoplay blocked: seeking still works */
-        } else { turnPrimed = true; try { turnVid.pause(); } catch (e) {} }
+      var TURN_N = 28;
+      var turnFrames = [];
+      for (var ti = 1; ti <= TURN_N; ti++) {
+        var tim = new Image();
+        tim.src = "assets/img/smile-seq/f" + (ti < 10 ? "0" + ti : ti) + ".webp";
+        if (tim.decode) tim.decode().catch(function () {});
+        turnFrames.push(tim);
       }
-      /* rAF loop: keep nudging currentTime toward the scroll target - resilient to
-         missed 'seeked' events, and coalesces rapid scroll into one seek per frame */
-      function turnTick() {
-        turnRAF = 0;
-        if (turnDur && turnVid.readyState >= 1 && Math.abs(turnVid.currentTime - turnWant) > 1 / 30) {
-          try { turnVid.currentTime = turnWant; } catch (e) {}
+      var turnCv = document.createElement("canvas");
+      turnCv.width = 560; turnCv.height = 746;
+      turnCv.className = "turn-canvas";
+      turnEl.insertBefore(turnCv, turnLive.parentNode || turnLive);
+      var turnCx = turnCv.getContext("2d");
+      var turnST, turnShown = -1;
+      function paintTurn() {
+        var p = turnST ? turnST.progress : 0;
+        var i = Math.max(0, Math.min(TURN_N - 1, Math.round(p * (TURN_N - 1))));
+        if (i === turnShown) return;
+        var im = turnFrames[i];
+        if (!im.complete || !im.naturalWidth) {
+          im.addEventListener("load", function () { turnShown = -1; paintTurn(); }, { once: true });
+          return;
         }
+        turnShown = i;
+        turnCx.drawImage(im, 0, 0, 560, 746);
       }
-      function turnRequest() { if (!turnRAF) turnRAF = requestAnimationFrame(turnTick); }
-
-      turnVid.load();
-      ScrollTrigger.create({
+      Promise.all(turnFrames.slice(0, 4).map(function (im) { return im.decode ? im.decode().catch(function () {}) : 0; }))
+        .then(function () { turnShown = -1; paintTurn(); turnLive.hidden = true; });
+      turnST = ScrollTrigger.create({
         trigger: "#about", start: "top top", end: "+=100%", scrub: true,
-        onUpdate: function (self) {
-          if (!turnDur) return;
-          primeTurn();
-          turnWant = gsap.utils.clamp(0, turnDur - 0.06, self.progress * turnDur);
-          turnRequest();
-        }
+        onUpdate: paintTurn
       });
 
       /* gentle depth parallax on the frame */
@@ -1127,8 +1120,7 @@
 
       return function () {
         splits.forEach(function (s) { try { s.revert(); } catch (e) {} });
-        if (turnRAF) cancelAnimationFrame(turnRAF);
-        turnVid.hidden = true; turnLive.hidden = false;
+        turnCv.remove(); turnLive.hidden = false;
         gsap.set(".turn", { clearProps: "transform" });
         gsap.ticker.remove(raf);
         lenis.destroy();
