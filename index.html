@@ -952,35 +952,42 @@
       gsap.to(".about-fig", { yPercent: -6, ease: "none",
         scrollTrigger: { trigger: "#about", start: "top top+=40%", end: "+=60%", scrub: true } });
 
-      /* portrait: scroll scrubs a neutral -> smile video (all-keyframe mp4, seek per frame) */
+      /* portrait: scroll scrubs a neutral -> smile video */
       var turnEl = document.querySelector("#about .turn");
       var turnLive = turnEl.querySelector(".turn-live");
       var turnVid = turnEl.querySelector(".turn-vid");
-      var turnDur = 0, turnWant = 0, turnSeeking = false;
+      var turnDur = 0, turnWant = 0, turnPrimed = false, turnRAF = 0;
+
       turnVid.hidden = false;
       turnVid.addEventListener("loadedmetadata", function () { turnDur = turnVid.duration || 5; });
-      turnVid.addEventListener("loadeddata", function () {
-        turnLive.hidden = true;
-        /* prime the decoder so the first scrub-seek is instant */
+      turnVid.addEventListener("loadeddata", function () { turnLive.hidden = true; primeTurn(); });
+
+      function primeTurn() {
+        if (turnPrimed) return;
         var p = turnVid.play();
-        if (p && p.then) p.then(function () { turnVid.pause(); turnVid.currentTime = 0; }).catch(function () {});
-      });
-      turnVid.addEventListener("seeked", function () {
-        turnSeeking = false;
-        if (Math.abs(turnVid.currentTime - turnWant) > 0.03) seekTurn();
-      });
-      function seekTurn() {
-        if (turnSeeking || turnVid.readyState < 2) return;
-        turnSeeking = true;
-        try { turnVid.currentTime = turnWant; } catch (e) { turnSeeking = false; }
+        if (p && p.then) {
+          p.then(function () { turnPrimed = true; turnVid.pause(); turnVid.currentTime = turnWant; })
+           .catch(function () { turnPrimed = true; }); /* autoplay blocked: seeking still works */
+        } else { turnPrimed = true; try { turnVid.pause(); } catch (e) {} }
       }
+      /* rAF loop: keep nudging currentTime toward the scroll target - resilient to
+         missed 'seeked' events, and coalesces rapid scroll into one seek per frame */
+      function turnTick() {
+        turnRAF = 0;
+        if (turnDur && turnVid.readyState >= 1 && Math.abs(turnVid.currentTime - turnWant) > 1 / 30) {
+          try { turnVid.currentTime = turnWant; } catch (e) {}
+        }
+      }
+      function turnRequest() { if (!turnRAF) turnRAF = requestAnimationFrame(turnTick); }
+
       turnVid.load();
       ScrollTrigger.create({
         trigger: "#about", start: "top top", end: "+=100%", scrub: true,
         onUpdate: function (self) {
           if (!turnDur) return;
-          turnWant = gsap.utils.clamp(0, turnDur - 0.05, self.progress * turnDur);
-          seekTurn();
+          primeTurn();
+          turnWant = gsap.utils.clamp(0, turnDur - 0.06, self.progress * turnDur);
+          turnRequest();
         }
       });
 
@@ -1120,6 +1127,7 @@
 
       return function () {
         splits.forEach(function (s) { try { s.revert(); } catch (e) {} });
+        if (turnRAF) cancelAnimationFrame(turnRAF);
         turnVid.hidden = true; turnLive.hidden = false;
         gsap.set(".turn", { clearProps: "transform" });
         gsap.ticker.remove(raf);
