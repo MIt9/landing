@@ -82,9 +82,11 @@ Prompt:
 ## turn-0.webp / turn-1.webp  (720x957, cold mono, ALPHA cut-out) — About portrait
 
 Two head-and-shoulders **cut-outs** (transparent background): `turn-0` right
-profile, `turn-1` front / eyes to camera. In the About section a canvas cross-
-fades profile → front as it scrolls, over a `--sun` disc (cobalt `#2B4CF0` by
-default) that rises behind him on the scrub timeline. `portrait.*` and the
+profile, `turn-1` front / eyes to camera. In the About section a canvas hard-
+cuts profile → front at the scroll midpoint, over a `--sun` disc (acid-yellow
+`#F5E003`, the client's "sun rising" choice — flip `.turn { --sun }` to
+`var(--cobalt)` for the calmer version) that rises behind him on the scrub
+timeline. `portrait.*` and the
 earlier 5-frame circular turn both retired.
 
 Design history worth knowing before regenerating:
