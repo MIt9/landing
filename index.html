@@ -268,19 +268,19 @@
   }
   .turn {
     --sun:var(--cobalt);
-    position:relative; width:100%; max-width:350px; aspect-ratio:3/4;
+    position:relative; width:100%; max-width:340px; aspect-ratio:720/957;
     margin:0 auto 1rem;
   }
   .turn-sun {
-    position:absolute; left:-14%; right:-14%; bottom:-4%;
+    position:absolute; left:-6%; right:-6%; bottom:13%;
     aspect-ratio:1; border-radius:50%; background:var(--sun); z-index:0;
   }
   .turn-fig, .turn-live {
     position:absolute; inset:0; width:100%; height:100%;
     object-fit:contain; object-position:bottom center; z-index:1;
     will-change:transform;
-    -webkit-mask-image:linear-gradient(to bottom, #000 78%, transparent 98%);
-            mask-image:linear-gradient(to bottom, #000 78%, transparent 98%);
+    -webkit-mask-image:linear-gradient(to bottom, #000 93%, transparent 100%);
+            mask-image:linear-gradient(to bottom, #000 93%, transparent 100%);
   }
 
   /* ============ 03 Impact ============ */
@@ -968,23 +968,22 @@
       turnCv.setAttribute("aria-hidden", "true");
       turnLive.replaceWith(turnCv);
       var turnCx = turnCv.getContext("2d");
-      var turnST;
+      var turnST, turnShown = -1;
       function paintTurn() {
         if (!turnImgs[0].naturalWidth || !turnImgs[1].naturalWidth) return;
-        var mix = gsap.utils.clamp(0, 1, ((turnST ? turnST.progress : 0) - 0.5) / 0.1);
+        var p = turnST ? turnST.progress : 0;
+        var i = p < 0.52 ? 0 : 1;                     /* hard cut at the midpoint - no ghost */
+        if (i === turnShown) return;
+        turnShown = i;
         turnCx.clearRect(0, 0, 720, 957);
-        turnCx.globalAlpha = 1;
-        turnCx.drawImage(turnImgs[0], 0, 0, 720, 957);
-        turnCx.globalAlpha = mix;
-        turnCx.drawImage(turnImgs[1], 0, 0, 720, 957);
-        turnCx.globalAlpha = 1;
+        turnCx.drawImage(turnImgs[i], 0, 0, 720, 957);
       }
       Promise.all(turnImgs.map(function (im) { return im.decode ? im.decode().catch(function () {}) : 0; }))
-        .then(paintTurn);
-      turnImgs.forEach(function (im) { im.addEventListener("load", paintTurn); });
+        .then(function () { turnShown = -1; paintTurn(); });
+      turnImgs.forEach(function (im) { im.addEventListener("load", function () { turnShown = -1; paintTurn(); }); });
       turnST = ScrollTrigger.create({
         trigger: "#about", start: "top top", end: "+=100%", scrub: true,
-        onUpdate: paintTurn                           /* hold profile, snap turn 0.5-0.6, hold front */
+        onUpdate: paintTurn
       });
 
       /* disc rises on the section scrub - the calm element against the reactive figure */
