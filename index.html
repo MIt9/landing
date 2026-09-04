@@ -253,7 +253,7 @@
     display:grid; gap:clamp(1.5rem,4vw,3.5rem);
     grid-template-columns:1fr;
   }
-  @media (min-width:860px) { .about-grid { grid-template-columns:1fr minmax(240px, 340px); align-items:center; } }
+  @media (min-width:860px) { .about-grid { grid-template-columns:1fr minmax(300px, 430px); align-items:center; } }
   .manifesto {
     font-size:clamp(1.5rem, 0.7rem + 2.8vw, 3.4rem);
     font-weight:400; line-height:1.12; letter-spacing:-0.015em;
@@ -263,19 +263,25 @@
   .manifesto .ln > span { display:inline-block; }
   .about-fig { margin:0; }
   .about-fig figcaption {
-    margin-top:0; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--bone-dim); max-width:24ch;
+    position:relative; z-index:2; margin-top:1.9rem;
+    font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--bone-dim); max-width:24ch;
   }
-  .turn { position:relative; width:100%; max-width:320px; aspect-ratio:1; margin:0 auto 1.6rem; will-change:transform; }
-  .turn-frames {
-    position:absolute; inset:0; border-radius:50%; overflow:hidden;
-    border:1px solid var(--bone-faint); background:var(--bg-raise);
-    will-change:transform;
+  .turn {
+    --sun:var(--cobalt);
+    position:relative; width:100%; max-width:350px; aspect-ratio:3/4;
+    margin:0 auto 1rem;
   }
-  .turn-live, .turn-canvas {
+  .turn-sun {
+    position:absolute; left:-14%; right:-14%; bottom:-4%;
+    aspect-ratio:1; border-radius:50%; background:var(--sun); z-index:0;
+  }
+  .turn-fig, .turn-live {
     position:absolute; inset:0; width:100%; height:100%;
-    object-fit:cover;
+    object-fit:contain; object-position:bottom center; z-index:1;
+    will-change:transform;
+    -webkit-mask-image:linear-gradient(to bottom, #000 78%, transparent 98%);
+            mask-image:linear-gradient(to bottom, #000 78%, transparent 98%);
   }
-  .turn-canvas { z-index:1; }
 
   /* ============ 03 Impact ============ */
   #impact { padding-left:0; padding-right:0; }
@@ -530,9 +536,8 @@
       <h2 class="manifesto" id="about-h">I coached wrestlers before I wrote code, and it turned out to be the same job: set the stance, hold the standard, move the group forward.</h2>
       <figure class="about-fig reveal">
         <div class="turn">
-          <div class="turn-frames">
-            <img class="turn-live" src="assets/img/turn-3.webp" alt="Portrait of Dmytro Bilukha." width="640" height="640" loading="eager" decoding="async">
-          </div>
+          <span class="turn-sun" aria-hidden="true"></span>
+          <img class="turn-live" src="assets/img/turn-1.webp" alt="Portrait of Dmytro Bilukha." width="720" height="957" loading="eager" decoding="async">
         </div>
         <figcaption class="mono">Master of Sports, Greco-Roman &middot; 5x regional champion</figcaption>
       </figure>
@@ -948,49 +953,60 @@
       gsap.to(".about-fig", { yPercent: -6, ease: "none",
         scrollTrigger: { trigger: "#about", start: "top top+=40%", end: "+=60%", scrub: true } });
 
-      /* portrait head-turn: preloaded frames blitted to a canvas (no decode flash) */
-      var turnWrap = document.querySelector("#about .turn-frames");
-      var turnImgs = ["turn-0", "turn-1", "turn-2", "turn-3", "turn-4"].map(function (n) {
+      /* portrait: profile -> front crossfade on a canvas; cobalt "standard" disc rises behind */
+      var turnEl = document.querySelector("#about .turn");
+      var turnLive = turnEl.querySelector(".turn-live");
+      var turnSun = turnEl.querySelector(".turn-sun");
+      var turnImgs = ["turn-0", "turn-1"].map(function (n) {
         var im = new Image(); im.src = "assets/img/" + n + ".webp";
         if (im.decode) im.decode().catch(function () {});
         return im;
       });
       var turnCv = document.createElement("canvas");
-      turnCv.width = turnCv.height = 640;
-      turnCv.className = "turn-canvas";
+      turnCv.width = 720; turnCv.height = 957;
+      turnCv.className = "turn-fig";
       turnCv.setAttribute("aria-hidden", "true");
-      turnWrap.appendChild(turnCv);
+      turnLive.replaceWith(turnCv);
       var turnCx = turnCv.getContext("2d");
-      var turnShown = -1;
-      function blitTurn(i) {
-        var im = turnImgs[i];
-        if (!im.complete || !im.naturalWidth) { im.addEventListener("load", function () { if (turnShown === i) blitTurn(i); }, { once: true }); return; }
-        turnCx.clearRect(0, 0, 640, 640);
-        turnCx.drawImage(im, 0, 0, 640, 640);
+      var turnST;
+      function paintTurn() {
+        if (!turnImgs[0].naturalWidth || !turnImgs[1].naturalWidth) return;
+        var mix = gsap.utils.clamp(0, 1, ((turnST ? turnST.progress : 0) - 0.5) / 0.1);
+        turnCx.clearRect(0, 0, 720, 957);
+        turnCx.globalAlpha = 1;
+        turnCx.drawImage(turnImgs[0], 0, 0, 720, 957);
+        turnCx.globalAlpha = mix;
+        turnCx.drawImage(turnImgs[1], 0, 0, 720, 957);
+        turnCx.globalAlpha = 1;
       }
-      function showTurn(i) { if (i === turnShown) { return; } turnShown = i; blitTurn(i); }
-      showTurn(0);
-      ScrollTrigger.create({
+      Promise.all(turnImgs.map(function (im) { return im.decode ? im.decode().catch(function () {}) : 0; }))
+        .then(paintTurn);
+      turnImgs.forEach(function (im) { im.addEventListener("load", paintTurn); });
+      turnST = ScrollTrigger.create({
         trigger: "#about", start: "top top", end: "+=100%", scrub: true,
-        onUpdate: function (self) {
-          showTurn(Math.max(0, Math.min(turnImgs.length - 1, Math.floor(self.progress * turnImgs.length))));
-        }
+        onUpdate: paintTurn                           /* hold profile, snap turn 0.5-0.6, hold front */
       });
 
-      /* portrait: depth parallax + velocity-reactive drift (follows scroll direction) */
-      gsap.to(".turn", { yPercent: -14, ease: "none",
+      /* disc rises on the section scrub - the calm element against the reactive figure */
+      gsap.fromTo(turnSun,
+        { yPercent: 150 },
+        { yPercent: 0, ease: "none",
+          scrollTrigger: { trigger: "#about", start: "top top", end: "+=78%", scrub: true } });
+
+      /* depth parallax + velocity drift on the figure only (disc stays put) */
+      gsap.to(".turn", { yPercent: -10, ease: "none",
         scrollTrigger: { trigger: "#about", start: "top bottom", end: "bottom top", scrub: true } });
       var drift = { v: 0 };
-      var clampV = gsap.utils.clamp(-52, 52);
+      var clampV = gsap.utils.clamp(-40, 40);
       ScrollTrigger.create({
         trigger: "#about", start: "top bottom", end: "bottom top",
         onUpdate: function (self) {
-          var v = clampV(self.getVelocity() / -46);
+          var v = clampV(self.getVelocity() / -60);
           if (Math.abs(v) > Math.abs(drift.v)) {
             drift.v = v;
             gsap.to(drift, {
               v: 0, duration: 0.9, ease: "power3",
-              onUpdate: function () { gsap.set(turnWrap, { y: drift.v, skewY: drift.v * 0.08 }); }
+              onUpdate: function () { gsap.set(turnCv, { y: drift.v, skewY: drift.v * 0.06 }); }
             });
           }
         }
@@ -1128,8 +1144,8 @@
 
       return function () {
         splits.forEach(function (s) { try { s.revert(); } catch (e) {} });
-        turnCv.remove();
-        gsap.set([".turn", turnWrap], { clearProps: "transform" });
+        turnCv.replaceWith(turnLive);
+        gsap.set([".turn", turnSun], { clearProps: "transform" });
         gsap.ticker.remove(raf);
         lenis.destroy();
         window.__lenis = null;

@@ -79,47 +79,54 @@ Prompt:
 
 ---
 
-## turn-0…4.webp  (640x640, cold monochrome) — About head-turn sequence
+## turn-0.webp / turn-1.webp  (720x957, cold mono, ALPHA cut-out) — About portrait
 
-Five head-and-shoulders frames, profile → front, blitted to a canvas as the
-About section scrolls (yellow disc behind). `portrait.*` retired — replaced by
-this.
+Two head-and-shoulders **cut-outs** (transparent background): `turn-0` right
+profile, `turn-1` front / eyes to camera. In the About section a canvas cross-
+fades profile → front as it scrolls, over a `--sun` disc (cobalt `#2B4CF0` by
+default) that rises behind him on the scrub timeline. `portrait.*` and the
+earlier 5-frame circular turn both retired.
 
-- **Model:** `google/nano-banana-edit`, `aspect_ratio=1:1`, `output_format=png`
-- **Real source photos** (`/Users/d.bilukcha/work/resume/photo/`):
-  `photo_2026-09-03_15-20-34.jpg` (90° profile),
-  `_15-20-47.jpg` (~35° three-quarter), `_15-20-42.jpg` (0° front).
+Design history worth knowing before regenerating:
+- The AI **erases the cauliflower ear** on every frame regardless of prompt, so
+  the wrestler's-ear detail can't live here — it needs a future real photo,
+  used large. Never mirror-flip a frame (inverts his anatomy + ear side + hair
+  part). That's why this is 2 real angles, not a mirrored sweep.
+- `nano-banana-edit` will not output real transparency, and its "flat #0E1217"
+  and "green screen" backgrounds both come back vignetted → unkeyable. The one
+  reliable path: ask for **pure flat white** + a deliberately **low-key grade**
+  ("no highlight above ~65% grey, hair matte near-black, the white bg is the
+  only bright thing"), then key with a corner flood-fill.
 
-1. **turn-4 (front, style anchor)** — task `dd3d9ceaaea370010d269a7d8b8be4e9`,
-   from the front photo. Prompt: editorial B&W studio portrait, head-and-
-   shoulders crop below the collarbone, head ~70% of frame height, matte-black
-   crew-neck, cool high-contrast monochrome with cold-blue shadows, soft frontal
-   key + rim, seamless pale white background, calm neutral expression, 35mm grain.
-2. **turn-0 (profile)** — task `c2413401077f75d3ca3ac1c90632cf41`,
-   `--image profile.jpg --image turn-4` → "keep head angle of image 1, match
-   style of image 2 exactly".
-3. **turn-2 (~35°)** — task `cf52afeb9ad59a2a9e5d24e9e648911d`,
-   `--image tq.jpg --image turn-0 --image turn-4` → reproduce image-1 angle in
-   the images-2/3 style.
-4. **turn-1 (~60°)** — task `f4419ed2e073829d21d4a8cc3da401bd`,
-   `--image turn-0 --image turn-2` → "angle halfway between the two".
-5. **turn-3 (~15°)** — task `268215d5361bd03e7a11b20d64f80a77`,
-   `--image turn-2 --image turn-4` → "much closer to front, only a slight turn".
+- **Model:** `google/nano-banana-edit`, `aspect_ratio=3:4`, `output_format=png`
+- **Sources** (`/Users/d.bilukcha/work/resume/photo/`): `photo_2026-09-03_15-20-34.jpg`
+  (right profile) for turn-0; `_15-20-42.jpg` (front) for turn-1.
+- turn-1 front — task `dca170ad92cbfa9a720b59eb95e8881e` region / regen chain
+  (final low-key white version). turn-0 profile — task `dca170ad92cbfa9a720b59eb95e8881e`
+  sibling. (Both regenerated several times; see `kie generate list`.)
 
-**Direction fix (v2):** the source photos face opposite ways (profile right,
-¾ left), so first-pass frames 1–3 rotated the wrong way. Refixed: ¾ source
-mirrored (`magick -flop`), frames 1/2/3 regenerated so the whole sequence
-turns one direction (right side of face toward camera → front).
-- turn-2 (~30°): task `<text-only style spec from mirrored ¾, no style-image ref —
-  passing the front anchor as a ref kept collapsing the angle to front>`
-- turn-1 (~55°): `--image turn-0 --image turn-2`, "halfway"
-- turn-3 (~15°): `--image turn-2 --image turn-4`, "slight turn"
+Prompt shape (each frame): "Editorial portrait, man in <ANGLE>. LOW-KEY cold
+black-and-white: hair/beard matte near-black, skin dark-to-mid grey, no
+highlight above 65% grey, faint cool blue in shadows, fine 35mm grain, dark
+charcoal crew-neck. Background 100% PURE FLAT WHITE #FFFFFF, uniform edge to
+edge, no gradient/grey/vignette/shadow — the only bright thing in the image.
+Head-and-shoulders, cropped mid-chest, head upper third of a 3:4 frame."
 
-Post: each 1024² PNG → `magick f.png -colorspace Gray -resize 720x720^ -gravity
-center -extent 720x720 -quality 82 turn-N.webp`. Frame order in HTML/JS =
-0 profile … 4 front. ~15–20 KB each.
+Key + finish (per frame):
+```
+# corner flood-fill key (short hair = clean edge; low-key grade = face survives)
+magick RAW.png -colorspace Gray -alpha set -bordercolor white -border 1 \
+  -fuzz 12% -fill none -draw "alpha 0,0 floodfill" -draw "alpha <W+1>,0 floodfill" \
+  -shave 1x1 -channel A -morphology Erode Diamond:1 -blur 0x0.6 +channel  key.png
+# normalise framing onto a common 760x1010 canvas, head-top aligned
+magick key.png -trim +repage -resize x860 -background none -gravity north -extent 760x1010 N.png
+# profile only: nudge right ~85px so the face lines up with the front frame for the crossfade
+magick -size 760x1010 xc:none N.png -geometry +85+8 -composite turn-0-src.png
+magick turn-0-src.png -resize 720x -quality 90 -define webp:method=6 turn-0.webp   # ~38 KB, alpha
+```
 
-KIE: ~10 × nano-banana-edit @ 4cr = **~40 credits (~$0.20)**.
+KIE: ~14 × nano-banana-edit @ 4cr ≈ **56 credits (~$0.28)** across all the
+regen attempts.
 
 ---
 
