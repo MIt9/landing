@@ -293,7 +293,8 @@
   }
   .impact-track.is-horizontal .plate {
     width:100vw; min-height:100dvh;
-    padding:0 clamp(2rem,10vw,12vw);
+    padding:30vh clamp(2rem,10vw,12vw) 0;
+    justify-content:flex-start;
     border-right:1px solid var(--bone-faint);
   }
   .plate .fig {
@@ -306,7 +307,7 @@
   .plate-signal .fig { color:var(--signal); }
   .plate .plate-label { font-size:clamp(1rem, .9rem + .6vw, 1.5rem); max-width:24ch; }
   .plate .plate-src { font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--bone-dim); }
-  .plate-vid {
+  .plate > .plate-vid {
     position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     z-index:0; opacity:.2; aspect-ratio:16/9;
   }
@@ -844,8 +845,7 @@
         onUpdate: function () {
           var mid = window.innerHeight * 0.5, idx = 0;
           secs.forEach(function (sec, i) {
-            var r = sec.getBoundingClientRect();
-            if (r.top <= mid && r.bottom >= mid) idx = i;
+            if (sec.getBoundingClientRect().top <= mid) idx = i;
           });
           now.textContent = String(idx + 1).padStart(2, "0");
         }
@@ -1000,15 +1000,16 @@
       gsap.set(cards[1], { yPercent: 120, opacity: 0 });
       ScrollTrigger.create({ trigger: "#cases", start: "top top", end: "+=160%", pin: true, pinSpacing: true });
       var cTl = gsap.timeline({ scrollTrigger: { trigger: "#cases", start: "top top", end: "+=160%", scrub: true } });
-      cTl.to(cards[1], { yPercent: 0, opacity: 1, ease: "none", duration: 1 })
-         .to(cards[0], { scale: 0.92, opacity: 0.55, yPercent: -4, ease: "none", duration: 1 }, 0);
+      /* card 0 fully exits before card 1 arrives - no overlapping legible text */
+      cTl.to(cards[0], { yPercent: -14, opacity: 0, ease: "none", duration: 0.42 })
+         .to(cards[1], { yPercent: 0, opacity: 1, ease: "none", duration: 0.5 }, 0.5);
       var t1 = new SplitText(cards[0].querySelector(".case-title"), { type: "chars", charsClass: "ch" });
       var t2 = new SplitText(cards[1].querySelector(".case-title"), { type: "chars", charsClass: "ch" });
       splits.push(t1, t2);
       gsap.from(t1.chars, { yPercent: 110, opacity: 0, stagger: 0.02, ease: "expo.out", duration: 0.8,
         scrollTrigger: { trigger: "#cases", start: "top 80%" } });
       gsap.set(t2.chars, { yPercent: 110, opacity: 0 });
-      cTl.to(t2.chars, { yPercent: 0, opacity: 1, stagger: 0.01, ease: "none", duration: 0.4 }, 0.55);
+      cTl.to(t2.chars, { yPercent: 0, opacity: 1, stagger: 0.01, ease: "none", duration: 0.32 }, 0.6);
 
       /* 06 Selected work */
       var workH = document.querySelector(".work-h");
