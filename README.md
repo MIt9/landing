@@ -108,38 +108,42 @@ npx serve .
 
 Then open <http://localhost:8000>.
 
-## Deploy — Cloudflare Pages
+## Deploy — GitHub Pages
 
-Static site, **no build step**. Everything in the repo root is served as-is.
+Static site, **no build step**. Served from the repo root of `main`.
+`CNAME` (custom domain) and `.nojekyll` (skip the Jekyll pass) live in the root.
 
-### Dashboard (Git integration)
-
-- **Framework preset:** None
-- **Build command:** *(leave empty)*
-- **Build output directory:** `/` (repo root)
-- **Root directory:** `/`
-
-### CLI (Wrangler)
-
-First deploy creates the project (`dmytro-bilukha` → `dmytro-bilukha.pages.dev`):
+### One-time setup
 
 ```sh
-npx wrangler pages deploy . --project-name=dmytro-bilukha
+gh repo create MIt9/landing --public --source=. --remote=origin --push
+gh api -X POST repos/MIt9/landing/pages -f 'source[branch]=main' -f 'source[path]=/'
 ```
 
-Wrangler needs a one-time login (`npx wrangler login`, opens a browser) or a
-`CLOUDFLARE_API_TOKEN` env var with the **Cloudflare Pages: Edit** permission.
-Each push to `main` via the Git integration also redeploys automatically.
+Then every push to `main` redeploys (~1 min). Without a domain the site is at
+`https://mit9.github.io/landing/`.
 
-`.git`, `.scratch`, and `.claude` are skipped by Wrangler by default.
+### Custom domain — `bilukha.dev` (registered at Cloudflare)
 
-### Custom domain (later — `bilukha.dev` is not registered yet)
+`CNAME` in the repo root holds `bilukha.dev`. In the Cloudflare dashboard for
+the zone, add DNS records (**Proxy status: DNS only / grey cloud** — GitHub
+terminates TLS itself):
 
-1. Register `bilukha.dev` (or a chosen domain).
-2. Cloudflare dashboard → **Workers & Pages** → `dmytro-bilukha` → **Custom domains**.
-3. Once live, update the placeholder `https://bilukha.dev/` URLs in `index.html`
-   (`<link rel="canonical">`, `og:url`, `og:image`, `twitter:image`, and the
-   JSON-LD `url`) — they are flagged with an HTML comment.
+| Type | Name | Target |
+|---|---|---|
+| CNAME | `bilukha.dev` (`@`) | `mit9.github.io` |
+| CNAME | `www` | `mit9.github.io` |
+
+Cloudflare flattens the apex CNAME automatically. After DNS resolves, GitHub
+issues a Let's Encrypt cert (a few minutes); then enable **Enforce HTTPS** in
+the repo's Pages settings. `.dev` is HSTS-preloaded, so HTTPS must work before
+first public load.
+
+Test subdomains (`lab.bilukha.dev`, `staging.bilukha.dev`, …) are independent
+records in the same zone — point them wherever, they don't touch this site.
+
+The `index.html` canonical / `og:url` / `twitter:image` / JSON-LD URLs already
+use `https://bilukha.dev/`.
 
 ## Follow-ups
 
