@@ -106,11 +106,20 @@ this.
 5. **turn-3 (~15°)** — task `268215d5361bd03e7a11b20d64f80a77`,
    `--image turn-2 --image turn-4` → "much closer to front, only a slight turn".
 
+**Direction fix (v2):** the source photos face opposite ways (profile right,
+¾ left), so first-pass frames 1–3 rotated the wrong way. Refixed: ¾ source
+mirrored (`magick -flop`), frames 1/2/3 regenerated so the whole sequence
+turns one direction (right side of face toward camera → front).
+- turn-2 (~30°): task `<text-only style spec from mirrored ¾, no style-image ref —
+  passing the front anchor as a ref kept collapsing the angle to front>`
+- turn-1 (~55°): `--image turn-0 --image turn-2`, "halfway"
+- turn-3 (~15°): `--image turn-2 --image turn-4`, "slight turn"
+
 Post: each 1024² PNG → `magick f.png -colorspace Gray -resize 720x720^ -gravity
 center -extent 720x720 -quality 82 turn-N.webp`. Frame order in HTML/JS =
-0 profile … 4 front. ~18–20 KB each.
+0 profile … 4 front. ~15–20 KB each.
 
-KIE: 6 × nano-banana-edit @ 4cr = **24 credits (~$0.12)**.
+KIE: ~10 × nano-banana-edit @ 4cr = **~40 credits (~$0.20)**.
 
 ---
 

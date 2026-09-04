@@ -265,14 +265,11 @@
   .about-fig figcaption {
     margin-top:0; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--bone-dim); max-width:24ch;
   }
-  .turn { position:relative; width:100%; max-width:320px; aspect-ratio:1; margin:0 auto 3rem; }
-  .turn-disc {
-    position:absolute; inset:0; border-radius:50%;
-    background:var(--signal); transform:translate(9%, 10%);
-  }
+  .turn { position:relative; width:100%; max-width:320px; aspect-ratio:1; margin:0 auto 1.6rem; will-change:transform; }
   .turn-frames {
     position:absolute; inset:0; border-radius:50%; overflow:hidden;
     border:1px solid var(--bone-faint); background:var(--bg-raise);
+    will-change:transform;
   }
   .turn-live, .turn-canvas {
     position:absolute; inset:0; width:100%; height:100%;
@@ -533,7 +530,6 @@
       <h2 class="manifesto" id="about-h">I coached wrestlers before I wrote code, and it turned out to be the same job: set the stance, hold the standard, move the group forward.</h2>
       <figure class="about-fig reveal">
         <div class="turn">
-          <span class="turn-disc" aria-hidden="true"></span>
           <div class="turn-frames">
             <img class="turn-live" src="assets/img/turn-4.webp" alt="Portrait of Dmytro Bilukha." width="640" height="640" loading="eager" decoding="async">
           </div>
@@ -981,6 +977,25 @@
         }
       });
 
+      /* portrait: depth parallax + velocity-reactive drift (follows scroll direction) */
+      gsap.to(".turn", { yPercent: -14, ease: "none",
+        scrollTrigger: { trigger: "#about", start: "top bottom", end: "bottom top", scrub: true } });
+      var drift = { v: 0 };
+      var clampV = gsap.utils.clamp(-52, 52);
+      ScrollTrigger.create({
+        trigger: "#about", start: "top bottom", end: "bottom top",
+        onUpdate: function (self) {
+          var v = clampV(self.getVelocity() / -46);
+          if (Math.abs(v) > Math.abs(drift.v)) {
+            drift.v = v;
+            gsap.to(drift, {
+              v: 0, duration: 0.9, ease: "power3",
+              onUpdate: function () { gsap.set(turnWrap, { y: drift.v, skewY: drift.v * 0.08 }); }
+            });
+          }
+        }
+      });
+
       /* 03 Impact - horizontal pan */
       var track = document.querySelector(".impact-track");
       track.classList.add("is-horizontal");
@@ -1114,6 +1129,7 @@
       return function () {
         splits.forEach(function (s) { try { s.revert(); } catch (e) {} });
         turnCv.remove();
+        gsap.set([".turn", turnWrap], { clearProps: "transform" });
         gsap.ticker.remove(raf);
         lenis.destroy();
         window.__lenis = null;
