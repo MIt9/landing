@@ -79,7 +79,23 @@ Prompt:
 
 ---
 
-## assets/img/smile-seq/f01–f28.webp — About portrait (CURRENT)
+## assets/img/snap-seq/f01–f41.webp — About portrait (CURRENT)
+
+Scroll-flipped **41-frame image sequence** on a `<canvas>`: stern silhouette in
+the dark → finger snap → hard side light on → restrained smile. 560×746,
+~436 KB total. `snap-poster.{avif,jpg}` = last frame (no-JS / reduced-motion /
+mobile static state).
+
+Source: client-supplied `video.mp4` (720×1280, 24fps, 10s, generated with an
+external provider from a low-key "before" and lit "after" still of `bla1.png`).
+Audio dropped; cropped to 3:4 (`crop=720:960:0:40`). Uneven sampling so the snap
+doesn't eat the scroll and the slow expression change isn't a flat stretch:
+0.9–1.5s @10fps, 1.5–3.3s @8fps, 3.3–4.5s @5fps, 4.5–5.5s @14fps.
+`cwebp -q 72 -m 6`; `avifenc -q 50 -s 6 -d 8` for the poster.
+
+---
+
+## assets/img/smile-seq/f01–f28.webp — RETIRED (neutral → smile, yellow tee)
 
 Scroll-flipped **28-frame image sequence** on a `<canvas>`: neutral →
 restrained warm smile as the About section scrolls

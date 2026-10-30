@@ -1,5 +1,9 @@
 # Dmytro Bilukha — personal site
 
+Positioning: **Senior Full-Stack Engineer / Tech Lead**, front-end leaning
+(React, TypeScript, Node.js). Content aligned with the October 30, 2026 resume.
+Open to work since July 2026, remote or relocation.
+
 **Art direction: "Hold the position".** Coach to developer to tech lead, told
 as one job: set the stance, hold the standard, move the group forward. The page
 is a sequence of *holds* — the viewport pins, one idea is worked through kinetic
@@ -48,19 +52,21 @@ General Sans from [Fontshare](https://www.fontshare.com/fonts/general-sans).
 ## Motion
 
 GSAP + ScrollTrigger + SplitText, driven through Lenis smooth-scroll
-(`lerp: 0.09`). All ScrollTriggers are built after `window.load` and after
+(`lerp: 0.09`). ScrollTriggers are built after `DOMContentLoaded` and after
 `document.fonts.load`, wrapped in `gsap.matchMedia`:
 
-- **Desktop (`min-width: 901px`)** — full rig. Six `100dvh` sections pin for a
+- **Desktop (`min-width: 901px`)** — full rig. Full-screen sections pin for a
   scroll and are worked through during the hold: hero headline weight loads and
   a cobalt hairline sweeps; the About manifesto unmasks line by line while the
-  portrait (five frames on an acid-yellow disc) turns from profile to camera —
+  portrait (41 frames) snaps its fingers, the light comes on and it smiles —
   blitted to a `<canvas>` so no frame flashes while decoding; **Impact
-  is a horizontal scroll hijack** through six full-screen number plates
+  is a horizontal scroll hijack** through nine full-screen number plates
   (`x` transform on an inner track, never body overflow); the Experience
-  timeline draws and milestones snap in with a cross-fading background year;
-  Cases is a sticky-stack of two video cards; Selected Work is a scrubbed
-  row-stagger. Skills does **not** pin (pattern break) and carries the page's
+  timeline draws and its six milestones reveal with a changing background year
+  derived from the milestone labels. Experience and Selected Work pin with scrubbed
+  reveals only when the entire section fits the viewport; taller sections use
+  natural scrolling and individual row reveals, re-evaluated on resize.
+  Cases is a sticky-stack of two video cards. Skills does **not** pin and carries the page's
   one marquee, its `timeScale` driven by scroll velocity. Contact does not pin;
   the word "code" punches to signal-yellow on enter.
 - **Mobile (`pointer: coarse`, `max-width: 900px`)** — no pins, no hijack, no
@@ -74,8 +80,8 @@ The section index overlay (top-bar **Index** button) is the keyboard skip
 mechanism: focus-trapped, `Esc` closes, links call `lenis.scrollTo`. A
 visually-hidden skip link to `#main` is also present.
 
-**Not built:** the blueprint's global directional 1/8 snap. With six pins plus
-the 6400 px horizontal Impact hijack the scroll distance per section is wildly
+**Not built:** the blueprint's global directional 1/8 snap. With multiple pins plus
+the horizontal Impact pan the scroll distance per section is wildly
 uneven, so a uniform or section-boundary snap either lands nowhere meaningful or
 flings the viewer through the whole horizontal pan on a short pause. Lenis plus
 the pins already give the sectioned cadence. See the comment in `index.html`.
@@ -94,6 +100,12 @@ The two case-study clips use a lite-embed facade: a local thumbnail plus a real
 play button; the `youtube-nocookie.com` iframe is created only on click, so no
 YouTube request fires on page load.
 
+The hero renders its heading, CTA and a separate 8.6 KB AVIF poster immediately,
+independently of motion initialization. The video sits above the poster and stays
+transparent until its first `playing` event. The scroll effects animate their
+shared backdrop, so the poster also remains visible if video loading fails.
+The hero has no entrance animation that hides already-visible text.
+
 Contact e-mail is assembled in JS (`["siniidrozd","gmail.com"].join("@")`) and
 never appears in the HTML source; `<noscript>` points to LinkedIn. No phone
 number anywhere.
@@ -107,6 +119,15 @@ npx serve .
 ```
 
 Then open <http://localhost:8000>.
+
+Hero loading regression check (requires `agent-browser`):
+
+```sh
+python3 scripts/test_hero_loading.py
+```
+
+This serves the site on a temporary port with delayed fonts, images and video;
+it checks that text and the poster remain visible while the video buffers.
 
 ## Deploy — GitHub Pages
 
@@ -159,11 +180,15 @@ assets/img/      cold-graded imagery + og-image + yt-*.jpg thumbnails + SOURCES.
 assets/video/    hero / impact-a / impact-b / work-texture, each mp4+webm+avif poster
 assets/fonts/    self-hosted woff2 (Bricolage Grotesque variable, General Sans 400/500/600, Spline Sans Mono 400/500)
 cv/dmytro-bilukha-cv.pdf
+cv/dmytro-bilukha-cv-uk.pdf
 ```
 
 ## Sections (in order)
 
-01 Hero (`FRONTEND TECH LEAD`) · 02 About (the manifesto) · 03 Impact (six
-number plates, horizontal) · 04 Experience (ten years, one company) · 05 Cases
-(two walkthroughs) · 06 Selected work (five repos) · 07 Skills (four groups +
+01 Hero (`Senior Full-Stack Engineer / Tech Lead`) · 02 About (the manifesto) · 03 Impact (nine
+number plates, horizontal) · 04 Experience (six milestones, 2016–July 2026) · 05 Cases
+(accessibility and Shuba ingredient integration) · 06 Selected work (eight repos) · 07 Skills (five groups +
 marquee) · 08 Contact (`Still coaching. Now in code.`) · colophon.
+
+The English and Ukrainian CV PDFs are copied from the resume repository's
+`resume/resume-dmytro-bilukha.pdf` and `resume/uk/resume-dmytro-bilukha.pdf`.

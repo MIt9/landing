@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dmytro Bilukha, Frontend Tech Lead</title>
-<meta name="description" content="Dmytro Bilukha, Frontend Tech Lead. Coach to developer to tech lead, ten years and one company building the storefront for Silpo, Ukraine's largest grocery retailer.">
+<title>Dmytro Bilukha, Senior Full-Stack Engineer / Tech Lead</title>
+<meta name="description" content="Senior Full-Stack Engineer / Tech Lead, front-end leaning: React, TypeScript, Node.js. Ten years at TEMABIT building Silpo products. Open to work, remote or relocation.">
 <meta name="author" content="Dmytro Bilukha">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0E1217">
@@ -12,15 +12,15 @@
 <link rel="canonical" href="https://bilukha.dev/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dmytro Bilukha">
-<meta property="og:title" content="Dmytro Bilukha, Frontend Tech Lead">
-<meta property="og:description" content="Coach to developer to tech lead. Ten years building the storefront for Silpo, Ukraine's largest grocery retailer. 900K organic visits a month, a record 61M UAH monthly GMV.">
+<meta property="og:title" content="Dmytro Bilukha, Senior Full-Stack Engineer / Tech Lead">
+<meta property="og:description" content="React, TypeScript, Node.js. Ten years building Silpo products at TEMABIT, from full-stack developer to team lead. Open to work since July 2026, remote or relocation.">
 <meta property="og:image" content="https://bilukha.dev/assets/img/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://bilukha.dev/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Dmytro Bilukha, Frontend Tech Lead">
-<meta name="twitter:description" content="Coach to developer to tech lead. Ten years building the storefront for Silpo, Ukraine's largest grocery retailer.">
+<meta name="twitter:title" content="Dmytro Bilukha, Senior Full-Stack Engineer / Tech Lead">
+<meta name="twitter:description" content="React, TypeScript, Node.js. Ten years building Silpo products at TEMABIT. Open to work since July 2026, remote or relocation.">
 <meta name="twitter:image" content="https://bilukha.dev/assets/img/og-image.jpg">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%232B4CF0'/%3E%3Ctext%20x='16'%20y='22'%20font-family='Arial,Helvetica,sans-serif'%20font-size='15'%20font-weight='700'%20fill='%23F2EEE4'%20text-anchor='middle'%3EDB%3C/text%3E%3C/svg%3E">
@@ -34,18 +34,17 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Dmytro Bilukha",
-  "jobTitle": "Frontend Tech Lead",
+  "jobTitle": "Senior Full-Stack Engineer / Tech Lead",
   "url": "https://bilukha.dev/",
   "image": "https://bilukha.dev/assets/img/og-image.jpg",
-  "description": "Frontend Tech Lead. Coach to developer to tech lead, ten years and one company building the storefront and weekly promo circular for Silpo, Ukraine's largest grocery retailer.",
-  "worksFor": { "@type": "Organization", "name": "TEMABIT Software Development (Fozzy Group)" },
+  "description": "Senior Full-Stack Engineer / Tech Lead, front-end leaning: React, TypeScript, Node.js. Worked at TEMABIT Software Development (Fozzy Group), March 2016 to July 2026. Open to work, remote or relocation.",
   "address": { "@type": "PostalAddress", "addressLocality": "Vinnytsia", "addressCountry": "UA" },
   "sameAs": [
     "https://www.linkedin.com/in/dmytro-bilukha",
     "https://github.com/MIt9",
     "https://www.youtube.com/playlist?list=PLTvKgymSu0IQ"
   ],
-  "knowsAbout": ["Frontend development", "React", "TypeScript", "Web performance", "Web accessibility", "Engineering team leadership", "E-commerce"]
+  "knowsAbout": ["Full-stack development", "React", "TypeScript", "Node.js", "Web performance", "Web accessibility", "Engineering team leadership", "MCP", "E-commerce"]
 }
 </script>
 
@@ -222,14 +221,16 @@
 
   /* ============ 01 Hero ============ */
   #hero { justify-content:flex-start; padding-top:calc(var(--topbar) + 8vh); }
-  .hero-vid {
+  .hero-backdrop {
     position:absolute; inset:0; width:100%; height:100%;
-    object-fit:cover; z-index:0; opacity:.18;
-    mix-blend-mode:screen; aspect-ratio:16/9;
+    z-index:0; opacity:.18; mix-blend-mode:screen;
   }
+  .hero-poster, .hero-vid { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .hero-vid { opacity:0; }
+  .hero-vid.is-playing { opacity:1; }
   .hero-inner { margin-top:6vh; }
   .hero-h {
-    font-size:clamp(2.6rem, 0.5rem + 11vw, 10rem);
+    font-size:clamp(2rem, .25rem + 6.5vw, 6.8rem);
     font-variation-settings:"wght" 320;
     letter-spacing:.01em;
   }
@@ -391,7 +392,7 @@
     padding:clamp(.9rem,2.5vw,1.5rem) 0; text-decoration:none; color:var(--bone);
   }
   @media (min-width:760px){ .repos a { grid-template-columns:minmax(12rem,18rem) 1fr; align-items:baseline; } }
-  .repo-name { font-family:var(--display); font-weight:500; font-size:clamp(1.3rem, 1rem + 1.6vw, 2.1rem); font-variation-settings:"wght" 400; }
+  .repo-name { font-family:var(--display); font-weight:500; font-size:clamp(1.3rem, 1rem + 1.6vw, 2.1rem); font-variation-settings:"wght" 400; overflow-wrap:anywhere; }
   .repo-path { font-size:.72rem; color:var(--bone-dim); word-break:break-all; }
   .repo-desc { font-size:.8rem; color:var(--bone-dim); }
   .repos a:hover .repo-name { color:var(--cobalt-lift); }
@@ -405,6 +406,8 @@
   .cat-group:first-of-type { margin-top:clamp(1.4rem,4vw,2.4rem); }
   .cat { font-family:var(--display); font-weight:500; font-size:clamp(2.2rem, 1rem + 6vw, 5.5rem); font-variation-settings:"wght" 480; letter-spacing:-.02em; }
   .cat-list { margin-top:.6rem; display:flex; flex-wrap:wrap; gap:.3rem 1.2rem; font-size:.82rem; color:var(--bone-dim); }
+  .cat-note { margin-top:.8rem; max-width:72ch; font-size:.9rem; color:var(--bone-dim); }
+  .cat-note + .cat-note { margin-top:.5rem; }
   .marquee { margin-top:clamp(1.6rem,5vw,3rem); overflow:hidden; border-top:1px solid var(--bone-faint); border-bottom:1px solid var(--bone-faint); padding:.7rem 0; }
   .marquee-inner { display:flex; gap:2rem; white-space:nowrap; width:max-content; }
   .marquee-inner span { font-size:.8rem; color:var(--bone-dim); letter-spacing:.04em; }
@@ -422,6 +425,7 @@
     font-variation-settings:"wght" 400;
   }
   .contact-cta { margin-top:1.8rem; }
+  .contact-status { margin-top:1.2rem; max-width:48ch; font-size:.85rem; color:var(--bone-dim); }
   .contact-links { margin-top:clamp(1.6rem,4vw,2.6rem); display:grid; gap:.5rem; font-size:.8rem; }
   .contact-links li { color:var(--bone-dim); }
   .contact-links a { color:var(--cobalt-lift); text-decoration:none; border-bottom:1px solid currentColor; }
@@ -436,7 +440,6 @@
 
   /* ============ Motion staging ============ */
   @media (min-width:901px) {
-    .js-motion .pre { opacity:0; }
     .js-motion .reveal { opacity:0; }
   }
   @media (max-width:900px) {
@@ -453,7 +456,7 @@
   /* ============ Reduced motion: designed static ============ */
   @media (prefers-reduced-motion: reduce) {
     .grain { display:none; }
-    .hero-vid { opacity:.14; }
+    .hero-backdrop { opacity:.14; }
     .plate-vid { opacity:.12; }
     .work-vid { opacity:.06; }
     .contact-vid { opacity:.3; }
@@ -510,16 +513,19 @@
 
   <!-- 01 -->
   <section class="panel" id="hero" aria-labelledby="hero-h">
-    <video class="hero-vid" aria-hidden="true" muted loop playsinline preload="none" poster="assets/video/hero-poster.avif">
-      <source data-src="assets/video/hero.webm" type="video/webm">
-      <source data-src="assets/video/hero.mp4" type="video/mp4">
-    </video>
-    <div class="hero-inner">
-      <h1 class="hero-h pre" id="hero-h">FRONTEND<br>TECH LEAD</h1>
-      <p class="hero-sub pre">Coach &rarr; Developer &rarr; Tech Lead &middot; same job</p>
+    <div class="hero-backdrop" aria-hidden="true">
+      <img class="hero-poster" src="assets/video/hero-poster.avif" alt="" width="1280" height="720" fetchpriority="high" decoding="async">
+      <video class="hero-vid" muted loop playsinline preload="none" poster="assets/video/hero-poster.avif">
+        <source data-src="assets/video/hero.webm" type="video/webm">
+        <source data-src="assets/video/hero.mp4" type="video/mp4">
+      </video>
     </div>
-    <p class="hero-loc pre">Dmytro Bilukha - Vinnytsia, UA</p>
-    <a class="btn cta hero-cta pre" href="#contact">Get in touch</a>
+    <div class="hero-inner">
+      <h1 class="hero-h" id="hero-h">Senior Full-Stack<br> Engineer / Tech Lead</h1>
+      <p class="hero-sub">Front-end leaning: React, TypeScript, Node.js</p>
+    </div>
+    <p class="hero-loc">Dmytro Bilukha - Vinnytsia, UA</p>
+    <a class="btn cta hero-cta" href="#contact">Get in touch</a>
     <span class="hero-hair" aria-hidden="true"></span>
   </section>
 
@@ -528,10 +534,10 @@
     <div class="about-grid">
       <h2 class="manifesto" id="about-h">I coached wrestlers before I wrote code, and it turned out to be the same job: set the stance, hold the standard, move the group forward.</h2>
       <figure class="about-fig reveal">
-        <div class="turn" role="img" aria-label="Portrait of Dmytro Bilukha; his expression warms from neutral to a smile as the section scrolls.">
+        <div class="turn" role="img" aria-label="Portrait of Dmytro Bilukha; as the section scrolls he snaps his fingers, the light comes on and he smiles.">
           <picture>
-            <source srcset="assets/video/smile-poster.avif" type="image/avif">
-            <img class="turn-live" src="assets/video/smile-poster.jpg" alt="" width="560" height="746" loading="eager" decoding="async">
+            <source srcset="assets/video/snap-poster.avif" type="image/avif">
+            <img class="turn-live" src="assets/video/snap-poster.jpg" alt="" width="560" height="746" loading="eager" decoding="async">
           </picture>
         </div>
         <figcaption class="mono">Master of Sports, Greco-Roman &middot; 5x regional champion</figcaption>
@@ -559,8 +565,8 @@
       </article>
       <article class="plate">
         <span class="fig" data-fig="&times;32">&times;32</span>
-        <span class="plate-label">Recipes module page-views growth</span>
-        <span class="plate-src mono">Launch baseline to now</span>
+        <span class="plate-label">Recipes page views; +31% conversion to orders</span>
+        <span class="plate-src mono">MVP: ~+5% overall sales (internal estimate)</span>
       </article>
       <article class="plate">
         <video class="plate-vid" aria-hidden="true" muted loop playsinline preload="none" poster="assets/video/impact-a-poster.avif">
@@ -581,6 +587,21 @@
         <span class="plate-label">Accessibility audit score, then real screen-reader bugs closed</span>
         <span class="plate-src mono">Validated with a blind user</span>
       </article>
+      <article class="plate">
+        <span class="fig" data-fig="54%">54%</span>
+        <span class="plate-label">Visit-to-action on the LEGO page; 82% view products</span>
+        <span class="plate-src mono">Page Builder, late 2025 · JSON Schema + React/TypeScript form generator</span>
+      </article>
+      <article class="plate">
+        <span class="fig" data-fig="+10%">+10%</span>
+        <span class="plate-label">Organic traffic within 3 months of launching city promo pages</span>
+        <span class="plate-src mono">silpo.ua/offers/city/{city}</span>
+      </article>
+      <article class="plate">
+        <span class="fig" data-fig="65M UAH">65M UAH</span>
+        <span class="plate-label">Promo carousel revenue per quarter, +26% quarter over quarter</span>
+        <span class="plate-src mono">silpo.ua</span>
+      </article>
     </div>
     <div class="impact-bar" aria-hidden="true"><span class="impact-bar-fill"></span></div>
   </section>
@@ -592,14 +613,16 @@
     <div class="exp-wrap">
       <div class="exp-line" aria-hidden="true"><span class="exp-line-fill"></span></div>
       <ol class="exp-list">
-        <li class="exp-item"><span class="mono exp-year">2016</span><p>Joined TEMABIT, the software arm of Fozzy Group, as a Frontend Developer. Product catalog, cart, checkout, and a shared component library for silpo.ua.</p></li>
-        <li class="exp-item"><span class="mono exp-year">2018</span><p>Senior Frontend Developer. Built the core single-page architecture for silpo.ua on React, Redux and GraphQL.</p></li>
-        <li class="exp-item"><span class="mono exp-year">2019</span><p>Tech Lead of the Marketing Features team. Three years from first commit to running the team.</p></li>
+        <li class="exp-item"><span class="mono exp-year">2016</span><p>Middle Full-Stack Developer at TEMABIT (Fozzy Group). Bizerba scales app in Electron, PromoTools CRM, and Angular 2+ outstaff development.</p></li>
+        <li class="exp-item"><span class="mono exp-year">2018</span><p>Senior Full-Stack Developer. Joined the existing silpo.ua React product (Redux, GraphQL): Page Constructor, event e-tickets, gift e-certificates and Robota Silpo vacancies.</p></li>
+        <li class="exp-item"><span class="mono exp-year">2019</span><p>Tech Lead. Launched Shop Silpo from scratch in React + TypeScript in ~3 weeks. Led 3 teams of 6 (Content, Shop, Resto) in 2020–2022.</p></li>
+        <li class="exp-item"><span class="mono exp-year">2022</span><p>Team Lead of Marketing Features: a cross-functional team of 9, owning content, recipes, promotions and page building.</p></li>
         <li class="exp-item"><span class="mono exp-year">2024</span><p>Merged shop.silpo.ua and silpo.ua into one platform. Traffic up 12 percent, conversion up 4 percent.</p></li>
+        <li class="exp-item"><span class="mono exp-year">Jul 2026</span><p>Completed ten years at TEMABIT. Open to new opportunities, remote or relocation.</p></li>
       </ol>
     </div>
-    <p class="exp-note">Teams of 8 to 12. Five engineers mentored to senior.</p>
-    <p class="exp-cta"><a class="link" href="cv/dmytro-bilukha-cv.pdf">Download full CV (PDF)</a></p>
+    <p class="exp-note">Led 3 teams of 6, then a cross-functional team of 9. Mentored 5+ developers to senior.</p>
+    <p class="exp-cta"><a class="link" href="cv/dmytro-bilukha-cv.pdf">CV in English (PDF)</a> &nbsp; <a class="link" href="cv/dmytro-bilukha-cv-uk.pdf" lang="uk" hreflang="uk">Резюме українською (PDF)</a></p>
   </section>
 
   <!-- 05 -->
@@ -622,16 +645,16 @@
       </article>
       <article class="case-card" id="case-2">
         <div class="case-media">
-          <button class="yt" type="button" data-id="rJ2_WVpQato" aria-label="Play the blind-link walkthrough">
+          <button class="yt" type="button" data-id="rJ2_WVpQato" aria-label="Play the Shuba ingredient-link walkthrough">
             <img src="assets/img/yt-rJ2_WVpQato.jpg" alt="" width="480" height="360" loading="lazy" decoding="async">
           </button>
-          <noscript><p class="yt-fallback"><a href="https://www.youtube.com/watch?v=rJ2_WVpQato">Watch the blind-link walkthrough on YouTube</a></p></noscript>
+          <noscript><p class="yt-fallback"><a href="https://www.youtube.com/watch?v=rJ2_WVpQato">Watch the Shuba ingredient-link walkthrough on YouTube</a></p></noscript>
         </div>
         <div class="case-meta mono">
-          <h3 class="case-title">Blind link</h3>
-          <p><span>Problem</span> No budget for the full integration.</p>
-          <p><span>Fix</span> Shipped a minimal blind link, the smallest thing that routes users through.</p>
-          <p><span>Moved</span> Adoption from 0 to 10 percent.</p>
+          <h3 class="case-title">Shuba: buy ingredients</h3>
+          <p><span>Problem</span> Turn recipes on shuba.life into grocery purchases.</p>
+          <p><span>Fix · 2024</span> Designed and built a link carrying ingredients from shuba.life to silpo.ua/shopping-list, with a product carousel per ingredient.</p>
+          <p><span>Moved</span> ~10% of visitors arriving from Shuba make a purchase.</p>
         </div>
       </article>
     </div>
@@ -651,9 +674,21 @@
         <span class="repo-name">kie-media-cli</span>
         <span><span class="repo-path mono">github.com/MIt9/kie-media-cli</span><br><span class="repo-desc mono">generative-media CLI, KIE API</span></span>
       </a></li>
-      <li><a href="https://github.com/MIt9/Generative-Media-Skills" target="_blank" rel="noopener">
-        <span class="repo-name">Generative-Media-Skills</span>
-        <span><span class="repo-path mono">github.com/MIt9/Generative-Media-Skills</span><br><span class="repo-desc mono">multi-modal media skills for AI agents</span></span>
+      <li><a href="https://github.com/MIt9/mcp-comfy-ui-builder" target="_blank" rel="noopener">
+        <span class="repo-name">mcp-comfy-ui-builder</span>
+        <span><span class="repo-path mono">github.com/MIt9/mcp-comfy-ui-builder</span><br><span class="repo-desc mono">MCP server for ComfyUI · npm</span></span>
+      </a></li>
+      <li><a href="https://github.com/MIt9/laya-cli" target="_blank" rel="noopener">
+        <span class="repo-name">laya-cli</span>
+        <span><span class="repo-path mono">github.com/MIt9/laya-cli</span><br><span class="repo-desc mono">typed-decisions CLI · Python · PyPI</span></span>
+      </a></li>
+      <li><a href="https://github.com/MIt9/job-form-filler" target="_blank" rel="noopener">
+        <span class="repo-name">job-form-filler</span>
+        <span><span class="repo-path mono">github.com/MIt9/job-form-filler</span><br><span class="repo-desc mono">Chrome extension + MCP server · npm</span></span>
+      </a></li>
+      <li><a href="https://github.com/MIt9/perplexity-pro-mcp" target="_blank" rel="noopener">
+        <span class="repo-name">perplexity-pro-mcp</span>
+        <span><span class="repo-path mono">github.com/MIt9/perplexity-pro-mcp</span><br><span class="repo-desc mono">MCP server · npm</span></span>
       </a></li>
       <li><a href="https://github.com/MIt9/silpo-agent-cli" target="_blank" rel="noopener">
         <span class="repo-name">silpo-agent-cli</span>
@@ -661,7 +696,7 @@
       </a></li>
       <li><a href="https://github.com/MIt9/barcode-2-svg" target="_blank" rel="noopener">
         <span class="repo-name">barcode-2-svg</span>
-        <span><span class="repo-path mono">github.com/MIt9/barcode-2-svg</span><br><span class="repo-desc mono">server-side SVG barcodes, no canvas &middot; 9 stars</span></span>
+        <span><span class="repo-path mono">github.com/MIt9/barcode-2-svg</span><br><span class="repo-desc mono">server-side SVG barcodes, no canvas</span></span>
       </a></li>
       <li><a href="https://github.com/MIt9/web-scoreboard" target="_blank" rel="noopener">
         <span class="repo-name">web-scoreboard</span>
@@ -680,20 +715,28 @@
     </div>
     <div class="cat-group">
       <h3 class="cat">Leadership</h3>
-      <ul class="cat-list mono"><li>Team of 8 to 12</li><li>Mentoring to senior</li><li>Code review</li><li>ADR</li><li>Scrum</li><li>A/B testing</li></ul>
+      <ul class="cat-list mono"><li>3 teams of 6 → cross-functional team of 9</li><li>Mentoring to senior</li><li>Code review</li><li>ADR</li><li>Scrum</li><li>A/B testing</li></ul>
+      <p class="cat-note">Owned the React direction across Silpo teams (2024–July 2026); chaired the React Forum (early 2025–July 2026), setting coding standards and leading cross-team reviews.</p>
+      <p class="cat-note">Platform context: 20+ Silpo teams, ~40 across the ecosystem.</p>
     </div>
     <div class="cat-group">
       <h3 class="cat">AI / LLM</h3>
-      <ul class="cat-list mono"><li>MCP servers</li><li>Agentic workflows</li><li>Claude Code</li></ul>
+      <ul class="cat-list mono"><li>Custom MCP servers</li><li>Kiro CLI</li><li>Claude Code</li><li>Codex</li><li>Antigravity</li><li>OpenCode</li></ul>
+      <p class="cat-note">Daily AI-assisted development since summer 2025, starting with Kiro and Claude Code. Designed and rolled out a Kiro CLI multi-agent workflow: ~50% time saved (internal estimate).</p>
+      <p class="cat-note">Built MCP servers for a Jira/Confluence analyst agent and for creating and editing recipes, banners and pages.</p>
+    </div>
+    <div class="cat-group">
+      <h3 class="cat">Backend &amp; integration</h3>
+      <ul class="cat-list mono"><li>Node.js</li><li>Express</li><li>GraphQL</li><li>REST</li><li>RabbitMQ</li><li>PostgreSQL</li><li>JSON Schema</li></ul>
     </div>
     <div class="cat-group">
       <h3 class="cat">Infrastructure</h3>
-      <ul class="cat-list mono"><li>AWS EKS</li><li>Microservices</li><li>CI/CD with GitLab and Azure DevOps</li></ul>
+      <ul class="cat-list mono"><li>Docker</li><li>Nginx</li><li>AWS (user level: RDS, S3, CloudWatch)</li><li>Sentry</li><li>CI/CD with GitLab and Azure DevOps</li></ul>
     </div>
     <div class="marquee" aria-hidden="true">
       <div class="marquee-inner mono">
-        <span>React &nbsp; TypeScript &nbsp; Next.js &nbsp; Angular &nbsp; GraphQL &nbsp; Node &nbsp; AWS EKS &nbsp; Redux &nbsp; CSS Modules &nbsp; Webpack &nbsp; Sentry &nbsp; Cypress &nbsp;</span>
-        <span>React &nbsp; TypeScript &nbsp; Next.js &nbsp; Angular &nbsp; GraphQL &nbsp; Node &nbsp; AWS EKS &nbsp; Redux &nbsp; CSS Modules &nbsp; Webpack &nbsp; Sentry &nbsp; Cypress &nbsp;</span>
+        <span>React &nbsp; TypeScript &nbsp; Next.js &nbsp; Angular &nbsp; GraphQL &nbsp; Node.js &nbsp; Docker &nbsp; Nginx &nbsp; Redux &nbsp; CSS Modules &nbsp; Webpack &nbsp; Sentry &nbsp; Cypress &nbsp;</span>
+        <span>React &nbsp; TypeScript &nbsp; Next.js &nbsp; Angular &nbsp; GraphQL &nbsp; Node.js &nbsp; Docker &nbsp; Nginx &nbsp; Redux &nbsp; CSS Modules &nbsp; Webpack &nbsp; Sentry &nbsp; Cypress &nbsp;</span>
       </div>
     </div>
   </section>
@@ -706,6 +749,7 @@
     </video>
     <div class="contact-inner">
       <h2 class="contact-h" id="contact-h">Still coaching. Now in <span class="em">code</span>.</h2>
+      <p class="contact-status mono">Open to work since July 2026, remote or relocation.</p>
       <a class="btn cta contact-cta" id="contact-cta" href="https://www.linkedin.com/in/dmytro-bilukha">Get in touch</a>
       <noscript><p class="mono" style="margin-top:1rem;font-size:.8rem">JavaScript is off, so the address is hidden. Reach me on <a href="https://www.linkedin.com/in/dmytro-bilukha">LinkedIn</a>.</p></noscript>
       <ul class="contact-links mono">
@@ -787,6 +831,9 @@
   });
 
   /* ---------- Video: lazy, one at a time ---------- */
+  document.querySelector(".hero-vid").addEventListener("playing", function (event) {
+    event.currentTarget.classList.add("is-playing");
+  }, { once: true });
   var playing = null;
   function playSafe(v) {
     if (playing && playing !== v) { try { playing.pause(); } catch (e) {} }
@@ -813,7 +860,7 @@
   }
 
   /* ---------- Motion rig ---------- */
-  window.addEventListener("load", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced || !window.gsap || !window.ScrollTrigger) return;
 
@@ -901,6 +948,25 @@
       });
     }
 
+    /* Longer resume sections must remain readable on short desktop windows. */
+    function fitPanel(panel, build) {
+      var ctx, previousFit;
+      function update() {
+        var fits = panel.offsetHeight <= window.innerHeight + 1;
+        if (fits === previousFit) return;
+        if (ctx) ctx.revert();
+        previousFit = fits;
+        ctx = gsap.context(function () { build(fits); });
+        ScrollTrigger.refresh();
+      }
+      update();
+      window.addEventListener("resize", update);
+      return function () {
+        window.removeEventListener("resize", update);
+        ctx.revert();
+      };
+    }
+
     /* ---- FULL desktop rig ---- */
     mm.add("(min-width: 901px) and (prefers-reduced-motion: no-preference)", function () {
       var splits = [];
@@ -913,20 +979,12 @@
 
       /* 01 Hero */
       var heroH = document.querySelector(".hero-h");
-      var tl = gsap.timeline();
-      tl.fromTo(".hero-vid", { opacity: 0 }, { opacity: 0.18, duration: 1.2, ease: "expo.out" }, 0);
-      splits.push.apply(splits, [].concat(kinetic(heroH, { delay: 0.15 })));
-      tl.set(".hero-h", { opacity: 1 }, 0.15);
-      tl.fromTo(".hero-sub", { opacity: 0, clipPath: "inset(0 100% 0 0)" },
-        { opacity: 1, clipPath: "inset(0 0% 0 0)", duration: 0.8, ease: "expo.out" }, 0.9);
-      tl.fromTo(".hero-cta", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.6, ease: "expo.out" }, 1.2);
-      tl.to(".hero-loc", { opacity: 1, duration: 0.5 }, 1.2);
 
       ScrollTrigger.create({ trigger: "#hero", start: "top top", end: "+=100%", pin: true, pinSpacing: true });
       loadBar(heroH, "#hero");
       gsap.to(".hero-h", { scale: 1.06, yPercent: -8, ease: "none",
         scrollTrigger: { trigger: "#hero", start: "top top", end: "+=100%", scrub: true } });
-      gsap.to(".hero-vid", { opacity: 0.38, scale: 1.08, ease: "none",
+      gsap.to(".hero-backdrop", { opacity: 0.38, scale: 1.08, ease: "none",
         scrollTrigger: { trigger: "#hero", start: "top top", end: "+=100%", scrub: true } });
       gsap.fromTo(".hero-hair", { scaleX: 0 }, { scaleX: 1, ease: "none",
         scrollTrigger: { trigger: "#hero", start: "top top-=60%", end: "+=40%", scrub: true } });
@@ -948,14 +1006,14 @@
       gsap.to(".about-fig", { yPercent: -6, ease: "none",
         scrollTrigger: { trigger: "#about", start: "top top+=40%", end: "+=60%", scrub: true } });
 
-      /* portrait: scroll flips through a 28-frame neutral -> smile image sequence on a canvas */
+      /* portrait: scroll flips through a 41-frame dark -> snap -> lit smile image sequence on a canvas */
       var turnEl = document.querySelector("#about .turn");
       var turnLive = turnEl.querySelector(".turn-live");
-      var TURN_N = 28;
+      var TURN_N = 41;
       var turnFrames = [];
       for (var ti = 1; ti <= TURN_N; ti++) {
         var tim = new Image();
-        tim.src = "assets/img/smile-seq/f" + (ti < 10 ? "0" + ti : ti) + ".webp";
+        tim.src = "assets/img/snap-seq/f" + (ti < 10 ? "0" + ti : ti) + ".webp";
         if (tim.decode) tim.decode().catch(function () {});
         turnFrames.push(tim);
       }
@@ -1033,20 +1091,42 @@
       /* 04 Experience */
       var expH = document.querySelector(".exp-h");
       splits.push(kinetic(expH, { trigger: "#experience" }));
-      ScrollTrigger.create({ trigger: "#experience", start: "top top", end: "+=100%", pin: true, pinSpacing: true });
       loadBar(expH, "#experience");
-      var years = ["2016", "2018", "2019", "2024"];
       var yearEl = document.querySelector("[data-year]");
       var expItems = gsap.utils.toArray("#experience .exp-item");
-      gsap.set(expItems, { x: 60, opacity: 0 });
-      var eTl = gsap.timeline({ scrollTrigger: { trigger: "#experience", start: "top top", end: "+=100%", scrub: true } });
-      eTl.to(".exp-line-fill", { height: "100%", ease: "none", duration: expItems.length }, 0);
-      expItems.forEach(function (item, i) {
-        eTl.to(item, {
-          x: 0, opacity: 1, ease: "power4.out", duration: 0.4,
-          onStart: function () { yearEl.textContent = years[i]; },
-          onReverseComplete: function () { yearEl.textContent = years[Math.max(0, i - 1)]; }
-        }, i);
+      var years = expItems.map(function (item) { return item.querySelector(".exp-year").textContent.trim().slice(-4); });
+      var cleanExperience = fitPanel(document.querySelector("#experience"), function (fits) {
+        yearEl.textContent = years[0];
+        if (fits) {
+          ScrollTrigger.create({ trigger: "#experience", start: "top top", end: "+=100%", pin: true, pinSpacing: true });
+          gsap.set(expItems, { x: 60, opacity: 0 });
+          var eTl = gsap.timeline({ scrollTrigger: { trigger: "#experience", start: "top top", end: "+=100%", scrub: true } });
+          eTl.to(".exp-line-fill", { height: "100%", ease: "none", duration: expItems.length }, 0);
+          expItems.forEach(function (item, i) {
+            eTl.to(item, {
+              x: 0, opacity: 1, ease: "power4.out", duration: 0.4,
+              onStart: function () { yearEl.textContent = years[i]; },
+              onReverseComplete: function () { yearEl.textContent = years[Math.max(0, i - 1)]; }
+            }, i);
+          });
+        } else {
+          gsap.to(".exp-line-fill", { height: "100%", ease: "none",
+            scrollTrigger: { trigger: ".exp-list", start: "top 75%", end: "bottom 75%", scrub: true } });
+          function updateYear() {
+            var active = 0;
+            expItems.forEach(function (item, i) {
+              if (item.getBoundingClientRect().top <= window.innerHeight * 0.35) active = i;
+            });
+            yearEl.textContent = years[active];
+          }
+          ScrollTrigger.create({ trigger: ".exp-list", start: "top 35%", end: "bottom 35%",
+            onUpdate: updateYear, onRefresh: updateYear
+          });
+          expItems.forEach(function (item) {
+            gsap.fromTo(item, { x: 30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6,
+              scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none reverse" } });
+          });
+        }
       });
 
       /* 05 Cases - sticky stack */
@@ -1070,15 +1150,23 @@
       /* 06 Selected work */
       var workH = document.querySelector(".work-h");
       splits.push(kinetic(workH, { trigger: "#work" }));
-      ScrollTrigger.create({ trigger: "#work", start: "top top", end: "+=100%", pin: true, pinSpacing: true });
       loadBar(workH, "#work");
       var repoRows = gsap.utils.toArray("#work .repos li");
-      repoRows.forEach(function (li, i) {
-        gsap.set(li, { clipPath: "inset(0 " + (i % 2 ? "100% 0 0" : "0 0 100%") + ")", opacity: 0 });
-      });
-      var wTl = gsap.timeline({ scrollTrigger: { trigger: "#work", start: "top top", end: "+=100%", scrub: true } });
-      repoRows.forEach(function (li, i) {
-        wTl.to(li, { clipPath: "inset(0 0 0 0)", opacity: 1, ease: "none", duration: 0.6 }, i * 0.5);
+      var cleanWork = fitPanel(document.querySelector("#work"), function (fits) {
+        if (fits) {
+          ScrollTrigger.create({ trigger: "#work", start: "top top", end: "+=100%", pin: true, pinSpacing: true });
+          var wTl = gsap.timeline({ scrollTrigger: { trigger: "#work", start: "top top", end: "+=100%", scrub: true } });
+          repoRows.forEach(function (li, i) {
+            gsap.set(li, { clipPath: "inset(0% " + (i % 2 ? "100% 0% 0%" : "0% 0% 100%") + ")", opacity: 0 });
+            wTl.to(li, { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, ease: "none", duration: 0.6 }, i * 0.5);
+          });
+        } else {
+          repoRows.forEach(function (li, i) {
+            gsap.fromTo(li, { clipPath: "inset(0% " + (i % 2 ? "100% 0% 0%" : "0% 0% 100%") + ")", opacity: 0 },
+              { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6,
+                scrollTrigger: { trigger: li, start: "top 90%", toggleActions: "play none none reverse" } });
+          });
+        }
       });
 
       /* 07 Skills - no pin, marquee reacts to scroll velocity */
@@ -1117,7 +1205,7 @@
       gsap.to(".contact-vid", { scale: 1.06, duration: 12, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
       /* NOTE: blueprint asked for a global directional 1/8 snap. Omitted deliberately.
-         With 6 pinned sections plus the 6400px horizontal Impact hijack, scroll
+         With multiple pinned sections plus the horizontal Impact pan, scroll
          distance per section is wildly uneven, so any uniform or section-boundary
          snap either lands nowhere meaningful or flings the viewer through the whole
          horizontal pan on a short pause. Lenis + the pins already give the sectioned
@@ -1129,6 +1217,8 @@
       ScrollTrigger.refresh();
 
       return function () {
+        cleanExperience();
+        cleanWork();
         splits.forEach(function (s) { try { s.revert(); } catch (e) {} });
         turnCv.remove(); turnLive.hidden = false;
         gsap.set(".turn", { clearProps: "transform" });
@@ -1146,7 +1236,9 @@
           if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
         });
       }, { threshold: 0.15 });
+      var revealTargets = [];
       document.querySelectorAll(".reveal, .about-fig, .exp-item, .repos li, .cat-group").forEach(function (el) {
+        revealTargets.push({ el: el, hadReveal: el.classList.contains("reveal"), hadIn: el.classList.contains("in") });
         el.classList.add("reveal");
         io.observe(el);
       });
@@ -1157,7 +1249,13 @@
         one.observe(fig);
       });
       document.querySelectorAll(".hero-vid, .contact-vid").forEach(registerVideo);
-      return function () { io.disconnect(); };
+      return function () {
+        io.disconnect();
+        revealTargets.forEach(function (target) {
+          if (!target.hadReveal) target.el.classList.remove("reveal");
+          if (!target.hadIn) target.el.classList.remove("in");
+        });
+      };
     });
   }
 })();
