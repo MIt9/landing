@@ -23,3 +23,9 @@ Shortlist now survives reload within the same tab using sessionStorage. Stored n
 Automated axe-core checks for WCAG A/AA rule tags at 1440, 390 and 360 pixels found two low-contrast captions on the orange recipe panel (4.34:1). Darkened panel text and reran: zero automated violations at all three widths. This remains an automated rule check, not full accessibility certification. Run with `NODE_PATH=/tmp/landing-qa/node_modules node scripts/test_accessibility.cjs` (requires axe-core and playwright-core).
 
 Visual/functional suite passes with reload persistence, invalid/blocked storage, static no-JavaScript reading, reduced motion and both mobile sizes. The suite now fails on reported asset, JS, anchor or overflow problems rather than merely logging them.
+
+## Expanded GitHub collection
+
+Added seven repositories after checking the public MIt9 repository list and relevant READMEs: hyperframes-avatar, ats-resume-tailor, socmedia-cli, linkedin-cli, google-map-cli, hi3d-cli and pexels-cli. Existing silpo-agent-cli, perplexity-pro-mcp, barcode-2-svg and web-scoreboard links now have descriptions and shortlist controls too. All eleven appear in a collapsible More from GitHub collection. Repository links are the source for each description. General introduction says personal projects, since public source does not establish an open-source license for every project.
+
+Tested expanded collection at desktop and phone widths, new project addition/removal and inclusion in email. Four visual/functional configurations pass. Expanded collection included in axe checks: no automated violations at 1440, 390 or 360 pixels.

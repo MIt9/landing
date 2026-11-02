@@ -10,3 +10,6 @@
 .save{display:none}.enhanced .save{display:inline-block}a,button,summary{scroll-margin-block:100px}.dock{bottom:max(12px,env(safe-area-inset-bottom))}
 
 .recipe-art{color:#191b19}
+
+/* Additional repositories retain the same factual, selectable project schema. */
+.other-repos{display:block}.extra-project{padding:26px 0;border-top:1px solid #515a46}.extra-project:first-child{border-top:0;padding-top:5px}.extra-project:last-child{padding-bottom:0}.extra-project h3{font-size:24px;line-height:1.2;letter-spacing:-.025em;color:var(--ink);overflow-wrap:anywhere}.extra-project p{font-size:13px;margin:12px 0 18px;max-width:50ch}.extra-project-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px 22px}.extra-project-actions .save{margin-left:0}.more-projects>summary>small{display:block}@media(max-width:760px){.extra-project h3{font-size:22px}.extra-project p{font-size:12px}.more-projects>summary>small{font-size:9px}}

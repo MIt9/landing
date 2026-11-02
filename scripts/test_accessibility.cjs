@@ -7,6 +7,7 @@ const {chromium}=require('playwright-core');
    const context=await browser.newContext({viewport:{width,height:844}});
    await context.addInitScript(()=>{Element.prototype.requestPointerLock=()=>{};Element.prototype.setPointerCapture=()=>{}});
    const page=await context.newPage();await page.goto('http://127.0.0.1:4500');
+   await page.locator('.more-projects summary').click();
    await page.addScriptTag({path:require.resolve('axe-core/axe.min.js')});
    const result=await page.evaluate(()=>axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}}));
    const violations=result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}));
