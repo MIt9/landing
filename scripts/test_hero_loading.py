@@ -1,4 +1,4 @@
-"""Regression check: visible hero while fonts and portrait load slowly.
+"""Regression check: visible hero while fonts and sculpture load slowly.
 
 Run: python3 scripts/test_hero_loading.py (requires agent-browser).
 Uses a temporary local server and isolated browser; no project dependencies.
@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SlowAssets(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path.endswith(('.woff2', 'snap-poster.jpg')):
+        if self.path.endswith(('.woff2', 'structure.png')):
             time.sleep(3)
         super().do_GET()
 
@@ -42,7 +42,7 @@ def main():
           window.__heroLoadingSamples = [];
           [300, 1000, 2500, 4000, 6500, 8000].forEach(delay => setTimeout(() => {
             const hero = document.querySelector('.hero-h');
-            const poster = document.querySelector('.hero-portrait img');
+            const poster = document.querySelector('.sculpture img');
             if (!hero || !poster) return;
             window.__heroLoadingSamples.push({
               time: delay, ready: document.readyState,
@@ -64,9 +64,9 @@ def main():
             samples = json.loads(browser('eval', '-b', base64.b64encode(js.encode()).decode()))
             print(json.dumps(samples, indent=2))
             assert all(s['titleOpacity'] == 1 and s['titleChildrenVisible'] for s in samples), 'Hero text hidden during startup'
-            assert samples[-1]['posterReady'], 'Portrait failed to load'
+            assert samples[-1]['posterReady'], 'Sculpture failed to load'
             assert not browser('errors'), 'Browser reported JavaScript errors'
-            print('PASS: hero title remains visible while slow portrait and fonts load')
+            print('PASS: hero title remains visible while slow sculpture and fonts load')
         finally:
             browser('close')
             server.shutdown()

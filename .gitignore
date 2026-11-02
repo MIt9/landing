@@ -12,3 +12,6 @@ Thumbs.db
 
 # claude code runtime
 .claude/
+
+# Scrollcraft visual verification artifacts
+scrollcraft/lab/

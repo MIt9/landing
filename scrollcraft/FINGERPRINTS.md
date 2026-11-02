@@ -28,6 +28,7 @@ changes only grammar and world will fail it.
 
 | Build | Grammar | Nav treatment | Hero device | Act-sequence shape | Close pattern | Signature move | World | Port |
 |---|---|---|---|---|---|---|---|---|
+| assembly | Assembly gallery | Persistent bottom room dock and shortlist | Generated industrial sculpture in layered room | Six rooms, two large product exhibits | Populated conversation ticket | Select work and carry into email | Photoreal industrial assembly | 4500 |
 | bilukha-fieldnotes | Engineering fieldnotes | Inline jump links | Split title and layered portrait | 8 natural-flow chapters with cobalt proof desk | Contact masthead | Selectable impact reading desk | Existing photographic portrait | 4500 |
 
 First build cleared an empty registry.
