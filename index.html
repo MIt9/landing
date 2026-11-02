@@ -238,6 +238,8 @@
     margin-top:1.4rem; font-size:clamp(.8rem, .7rem + .5vw, 1.1rem);
     color:var(--bone-dim); text-transform:uppercase; letter-spacing:.04em;
   }
+  .hero-cv { display:flex; flex-wrap:wrap; gap:.6rem 1.2rem; margin-top:1.3rem; font-size:.8rem; }
+  .hero-cv a:focus-visible { outline:2px solid var(--cobalt-lift); outline-offset:4px; }
   .hero-loc {
     position:absolute; left:var(--pad); bottom:2rem; z-index:2;
     font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--bone-dim);
@@ -523,6 +525,10 @@
     <div class="hero-inner">
       <h1 class="hero-h" id="hero-h">Senior Full-Stack<br> Engineer / Tech Lead</h1>
       <p class="hero-sub">Front-end leaning: React, TypeScript, Node.js</p>
+      <div class="hero-cv mono" aria-label="CV downloads">
+        <a class="link" href="cv/dmytro-bilukha-cv.pdf">CV in English (PDF)</a>
+        <a class="link" href="cv/dmytro-bilukha-cv-uk.pdf" lang="uk" hreflang="uk">Резюме українською (PDF)</a>
+      </div>
     </div>
     <p class="hero-loc">Dmytro Bilukha - Vinnytsia, UA</p>
     <a class="btn cta hero-cta" href="#contact">Get in touch</a>
