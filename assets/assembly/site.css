@@ -5,3 +5,8 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sculpture,.hero-h,.assembly-label{transform:none!important}[data-sc-in],[data-sc-reveal]{opacity:1!important;transform:none!important;clip-path:none!important}.ticket{transform:none}}
 
 .dock .tray-link[aria-current=true]{background:#444c3c;color:#eeeae1}body:not(.motion-off) .exhibit-art.entered{animation:material-reveal 550ms cubic-bezier(.23,1,.32,1) both}@keyframes material-reveal{from{clip-path:inset(0 0 18% 0)}to{clip-path:inset(0)}}@media(prefers-reduced-motion:reduce){.exhibit-art.entered{animation:none!important}}
+
+/* Progressive enhancement: keep the static portfolio useful without scripting. */
+.save{display:none}.enhanced .save{display:inline-block}a,button,summary{scroll-margin-block:100px}.dock{bottom:max(12px,env(safe-area-inset-bottom))}
+
+.recipe-art{color:#191b19}

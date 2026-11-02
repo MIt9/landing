@@ -30,7 +30,14 @@
  arrival.addEventListener('pointerleave',()=>arrival.style.setProperty('--pointer-x','0px'));
  reduced.addEventListener('change',()=>{arrival.removeAttribute('style');if(reduced.matches)portrait.src='assets/video/snap-poster.jpg';else paint()});paint();
  const selected=new Set(), saves=[...document.querySelectorAll('[data-save]')], list=document.querySelector('#shortlist'), status=document.querySelector('#shortlist-status');
+ const storageKey='bilukha-conversation-shortlist';
+ const validNames=new Set(saves.map(button=>button.dataset.save));
+ try {
+  const stored=JSON.parse(sessionStorage.getItem(storageKey)||'[]');
+  if(Array.isArray(stored))stored.forEach(name=>{if(validNames.has(name))selected.add(name)});
+ } catch { /* The shortlist remains usable when browser storage is unavailable. */ }
  function update(announce){
+  try { sessionStorage.setItem(storageKey,JSON.stringify([...selected])); } catch { /* Memory-only selection is sufficient. */ }
   document.querySelectorAll('[data-count]').forEach(e=>e.textContent=selected.size);
   saves.forEach(button=>{const active=selected.has(button.dataset.save);button.setAttribute('aria-pressed',String(active));button.textContent=active?'✓ Added to shortlist':'+ Add to shortlist'});
   list.replaceChildren();
@@ -46,4 +53,5 @@
  document.querySelectorAll('#projects,#person,#tools,#contact').forEach(e=>observer.observe(e));
  const entrances=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('entered');entrances.unobserve(entry.target)}}),{threshold:.05});
  document.querySelectorAll('[data-entrance]').forEach(e=>entrances.observe(e));
+ document.documentElement.classList.add('enhanced');
 })();

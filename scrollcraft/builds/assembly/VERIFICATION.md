@@ -15,3 +15,11 @@ Feel check: intrigue → recognition → confidence → connection → agency �
 Limits: physical iPhone and actual email sending were not tested. External YouTube playback was not exercised; links lead directly to the existing walkthroughs. This is not a complete screen-reader audit. One built-in imagegen call; no KIE/external media API spend. Built-in tool does not expose a dollar receipt.
 
 Run visual/functional checks with playwright-core available to Node: `NODE_PATH=/tmp/landing-qa/node_modules node scripts/test_assembly.cjs` while a local HTTP server runs on port 4500. Run the slow-resource check with `python3 scripts/test_hero_loading.py` (uses installed agent-browser).
+
+## Follow-up polish
+
+Shortlist now survives reload within the same tab using sessionStorage. Stored names are restricted to actual current projects. Blocked storage and invalid stored data both fall back to a working in-memory list. Save buttons are hidden until JavaScript enhancement completes, so the static page does not offer inactive controls. Keyboard skip link transfers focus into main; controls reserve scroll margin above the floating navigation.
+
+Automated axe-core checks for WCAG A/AA rule tags at 1440, 390 and 360 pixels found two low-contrast captions on the orange recipe panel (4.34:1). Darkened panel text and reran: zero automated violations at all three widths. This remains an automated rule check, not full accessibility certification. Run with `NODE_PATH=/tmp/landing-qa/node_modules node scripts/test_accessibility.cjs` (requires axe-core and playwright-core).
+
+Visual/functional suite passes with reload persistence, invalid/blocked storage, static no-JavaScript reading, reduced motion and both mobile sizes. The suite now fails on reported asset, JS, anchor or overflow problems rather than merely logging them.
