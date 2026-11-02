@@ -1,4 +1,4 @@
-"""Regression check: visible hero while fonts/images/video load slowly.
+"""Regression check: visible hero while fonts and portrait load slowly.
 
 Run: python3 scripts/test_hero_loading.py (requires agent-browser).
 Uses a temporary local server and isolated browser; no project dependencies.
@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SlowAssets(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path.endswith(('.woff2', 'snap-poster.jpg', 'hero.webm', 'hero.mp4')):
+        if self.path.endswith(('.woff2', 'snap-poster.jpg')):
             time.sleep(3)
         super().do_GET()
 
@@ -37,19 +37,18 @@ def main():
     with tempfile.TemporaryDirectory(prefix='hero-loading-') as folder:
         probe = Path(folder) / 'probe.js'
         probe.write_text('''
+          Element.prototype.requestPointerLock = () => {};
+          Element.prototype.setPointerCapture = () => {};
           window.__heroLoadingSamples = [];
           [300, 1000, 2500, 4000, 6500, 8000].forEach(delay => setTimeout(() => {
             const hero = document.querySelector('.hero-h');
-            const poster = document.querySelector('.hero-poster');
-            const video = document.querySelector('.hero-vid');
-            if (!hero || !video) return;
+            const poster = document.querySelector('.hero-portrait img');
+            if (!hero || !poster) return;
             window.__heroLoadingSamples.push({
               time: delay, ready: document.readyState,
               titleOpacity: Number(getComputedStyle(hero).opacity),
               titleChildrenVisible: [...hero.querySelectorAll('.ln > div')].every(e => Number(getComputedStyle(e).opacity) > .99),
-              posterReady: !!poster && poster.complete && poster.naturalWidth > 0,
-              videoReady: video.readyState, videoOpacity: Number(getComputedStyle(video).opacity),
-              playing: video.classList.contains('is-playing')
+              posterReady: !!poster && poster.complete && poster.naturalWidth > 0
             });
           }, delay));
         ''')
@@ -64,14 +63,10 @@ def main():
             })()'''
             samples = json.loads(browser('eval', '-b', base64.b64encode(js.encode()).decode()))
             print(json.dumps(samples, indent=2))
-            assert all(s['posterReady'] for s in samples), 'Independent poster missing or delayed'
             assert all(s['titleOpacity'] == 1 and s['titleChildrenVisible'] for s in samples), 'Hero text hidden during startup'
-            buffering = [s for s in samples if s['videoReady'] < 2]
-            assert buffering, 'Slow-video scenario was not exercised'
-            assert all(s['videoOpacity'] == 0 for s in buffering), 'Unready video obscures the poster'
-            assert any(s['playing'] and s['videoOpacity'] == 1 for s in samples), 'Video never replaced the poster'
+            assert samples[-1]['posterReady'], 'Portrait failed to load'
             assert not browser('errors'), 'Browser reported JavaScript errors'
-            print('PASS: poster and text visible before slow resources; video shown only when playing')
+            print('PASS: hero title remains visible while slow portrait and fonts load')
         finally:
             browser('close')
             server.shutdown()
