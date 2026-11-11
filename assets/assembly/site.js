@@ -4,6 +4,7 @@
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const arrival=document.querySelector('#arrival'), person=document.querySelector('#person'), portrait=document.querySelector('#portrait');
  let queued=false, lastFrame=0;
+ if(!reduced.matches)portrait.src='assets/img/snap-seq/f01.webp';
  function paint(){
   queued=false;
   if(reduced.matches)return;
@@ -17,7 +18,7 @@
   }
   const r=person.getBoundingClientRect();
   if(r.top<innerHeight&&r.bottom>0){
-   const p=Math.max(0,Math.min(1,(innerHeight*.75-r.top)/(r.height*.7)));
+   const p=Math.max(0,Math.min(1,(innerHeight*.4-r.top)/(innerHeight*.8)));
    const frame=1+Math.round(p*40);
    if(frame!==lastFrame){lastFrame=frame;portrait.src=`assets/img/snap-seq/f${String(frame).padStart(2,'0')}.webp`;}
   }
@@ -28,7 +29,7 @@
   const r=arrival.getBoundingClientRect();arrival.style.setProperty('--pointer-x',`${((event.clientX-r.left)/r.width-.5)*18}px`);
  },{passive:true});
  arrival.addEventListener('pointerleave',()=>arrival.style.setProperty('--pointer-x','0px'));
- reduced.addEventListener('change',()=>{arrival.removeAttribute('style');if(reduced.matches)portrait.src='assets/video/snap-poster.jpg';else paint()});paint();
+ reduced.addEventListener('change',()=>{arrival.removeAttribute('style');lastFrame=0;if(reduced.matches)portrait.src='assets/video/snap-poster.jpg';else{portrait.src='assets/img/snap-seq/f01.webp';paint()}});paint();
  const selected=new Set(), saves=[...document.querySelectorAll('[data-save]')], list=document.querySelector('#shortlist'), status=document.querySelector('#shortlist-status');
  const storageKey='bilukha-conversation-shortlist';
  const validNames=new Set(saves.map(button=>button.dataset.save));

@@ -1,6 +1,6 @@
 # Dmytro Bilukha — personal site
 
-Positioning: **Senior Full-Stack Engineer / Tech Lead**, front-end leaning
+Positioning: **Senior Full-Stack Engineer / Tech Lead**
 (React, TypeScript, Node.js). Content aligned with the October 30, 2026 resume.
 Open to work since July 2026, remote or relocation.
 
@@ -191,4 +191,4 @@ number plates, horizontal) · 04 Experience (six milestones, 2016–July 2026) �
 marquee) · 08 Contact (`Still coaching. Now in code.`) · colophon.
 
 The English and Ukrainian CV PDFs are copied from the resume repository's
-`resume/resume-dmytro-bilukha.pdf` and `resume/uk/resume-dmytro-bilukha.pdf`.
+the full-stack and Ukrainian resume sources, adapted to the site positioning.
